@@ -1,0 +1,14 @@
+.header-container {
+    position: absolute;
+    z-index: 2;
+    width: 100%;
+}
+
+.cap {
+    text-transform: capitalize;
+}
+
+.menu-link-sage {
+    font-family: 'Poppins-Medium';
+    font-size: 13px;
+}

@@ -1,0 +1,29 @@
+.titlebar {
+    user-select: none;
+    display: flex;
+    justify-content: flex-end;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
+}
+
+/* Hover is able tu use on this class*/
+.titlebar-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-right: 10px;
+}
+
+/* Items */
+.item-remove:hover {
+    color: black;
+}
+
+.item-close:hover {
+    color: black;
+}

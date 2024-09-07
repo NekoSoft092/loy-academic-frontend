@@ -1,0 +1,44 @@
+.message-component {
+    margin-top: 400px;
+    z-index: 99;
+}
+
+.code-wrapper {
+    width: 100%;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.code-content {
+    font-size: 14px;
+    line-height: 0px;
+    letter-spacing: 0px;
+    border-radius: 0px;
+}
+
+.clipboard-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.clipboard-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.clipboard-content i {
+    margin-top: 5px;
+}
+
+.clipboard-content i:hover, .clipboard-header i:hover {
+    cursor: pointer;
+}
+
+.ma{
+    margin-top: -35px;
+}
+

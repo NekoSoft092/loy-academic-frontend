@@ -1,0 +1,48 @@
+.space-between {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 590px;
+}
+
+.update-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.modal-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    z-index: 4;
+    height: 600px;
+    margin-top: 500px;
+}
+
+/* Developer tools */
+.developers-tools {
+    display: flex;
+    flex-direction: column;
+    padding-left: 15px;
+    margin-top: 15px;
+}
+
+.developers-tools h3 {
+   font-size: 18px;
+   margin: 0;
+   padding: 0;
+}
+
+.developers-tools p {
+    margin: 0;
+    padding: 0;
+}
+
+.developers-tools button {
+    margin: 0;
+    margin-top: 10PX;
+}

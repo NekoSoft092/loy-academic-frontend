@@ -1,0 +1,100 @@
+{
+  "build": {
+    "beforeDevCommand": "pnpm dev",
+    "beforeBuildCommand": "pnpm build",
+    "devPath": "http://localhost:1420",
+    "distDir": "../dist",
+    "withGlobalTauri": false
+  },
+  "package": {
+    "productName": "Sage App",
+    "version": "0.4.7"
+  },
+  
+  "tauri": {
+    "allowlist": {
+      "os": {
+        "all": true
+      },
+      "all": false,
+      "globalShortcut": {
+        "all": true
+      },
+      "shell": {
+        "all": false,
+        "open": true
+      },
+      "dialog": {
+        "message": true,
+        "save": true,
+        "confirm": true
+      },
+      "window": {
+        "setAlwaysOnTop": false, 
+        "all": true, 
+        "show": true, 
+        "close": true
+      },
+      "path": {
+        "all": true
+      },
+      "fs": {
+        "all": true,
+        "readFile": true,
+        "removeFile": true,
+        "writeFile": true,
+        "readDir": true,
+        "scope": ["$DOCUMENT/*", "$DESKTOP/**/**"]
+      }
+    },
+    "bundle": {
+      "active": true,
+      "icon": [
+        "icons/32x32.png",
+        "icons/128x128.png",
+        "icons/128x128@2x.png",
+        "icons/icon.icns",
+        "icons/icon.ico"
+      ],
+      "identifier": "sage.desktop.app",
+      "targets": "all", 
+      "windows": {
+        "webviewInstallMode": {
+          "type": "downloadBootstrapper"
+        }
+      }
+    },
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": true,
+      "endpoints": [
+        "https://raw.githubusercontent.com/SageWizzards/sage-app-releases/main/latest.json"
+      ],
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDY3QzVDQjYxOEVBNTNGMDAKUldRQVA2V09ZY3ZGWjlYVVIxMzM0V1hyRElIUExXakt5N1hjcFAzQXNDMFdhOVlHWnJ4NC93K0MK"
+    },
+    "macOSPrivateApi": true,
+    "windows": [
+      {
+        "fullscreen": false,
+        "resizable": false,
+        "title": "Sage Desktop App",
+        "width": 360,
+        "height": 640, 
+        "focus": true, 
+        "visible": true, 
+        "skipTaskbar": false, 
+        "hiddenTitle": false, 
+        "transparent": true, 
+        "decorations": false
+      }
+    ], 
+    "systemTray": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true,
+      "menuOnLeftClick": false
+    }
+  }
+}
