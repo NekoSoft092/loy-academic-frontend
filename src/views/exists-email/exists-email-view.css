@@ -1,14 +1,14 @@
-.login-view {
+.exists-email-view {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
 }
 
-.header-view-login {
+.header-view {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     padding: 10px;
 }
@@ -26,6 +26,4 @@
     opacity: .6;
 }
 
-.forgot:hover {
-    cursor: pointer;
-}
+

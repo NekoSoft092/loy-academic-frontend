@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import postcss from './postcss.config';
 
 export default defineConfig(async () => ({
   resolve: {
@@ -9,6 +10,9 @@ export default defineConfig(async () => ({
   },
 
   plugins: [react()],
+  css: {
+    postcss,
+  },
 
   clearScreen: false,
   server: {

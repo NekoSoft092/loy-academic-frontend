@@ -13,11 +13,12 @@ export function Protected({ children }: ProtectedProps): JSX.Element {
     checkSignIn()
       .then((data) => {
         if (!data) {
-          navigate('/login');
+          console.log('llego')
+          navigate('/');
         }
       })
       .catch((err) => {
-        navigate('/login');
+        navigate('/is-registered');
         console.log('session', err);
       })
   }, [])

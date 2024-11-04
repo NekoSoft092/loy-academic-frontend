@@ -1587,35 +1587,27 @@ cs-main-container {
 .cs-status--available .cs-status__bullet {
   background: radial-gradient(circle at 3px 3px, #00d5a6, #00a27e);
 }
-.cs-status--available .cs-status__name {
-}
 .cs-status--unavailable .cs-status__bullet {
   background: radial-gradient(circle at 3px 3px, #ffb527, #a66d00);
 }
-.cs-status--unavailable .cs-status__name {
-}
+
 .cs-status--away .cs-status__bullet {
   background: radial-gradient(circle at 3px 3px, #ffdbb0, #fc8b00);
 }
-.cs-status--away .cs-status__name {
-}
+
 .cs-status--dnd .cs-status__bullet {
   background-color: #ec1212;
   background: radial-gradient(circle at 3px 3px, #f89f9f, #ec1212);
-}
-.cs-status--dnd .cs-status__name {
 }
 .cs-status--invisible .cs-status__bullet {
   background-color: #c2d1d9;
   background: radial-gradient(circle at 3px 3px, white, #c2d1d9);
 }
-.cs-status--invisible .cs-status__name {
-}
+
 .cs-status--eager .cs-status__bullet {
   background: radial-gradient(circle at 3px 3px, #fffccc, #ffee00);
 }
-.cs-status--eager .cs-status__name {
-}
+
 .cs-status--xs:not(.cs-status--named) {
   width: 4px;
   height: 4px;
@@ -1807,10 +1799,6 @@ cs-main-container {
 }
 .cs-search__input:disabled {
   background-color: var(--primary);
-}
-.cs-search__input::-moz-placeholder {
-}
-.cs-search__input::placeholder {
 }
 .cs-search__search-icon {
   box-sizing: border-box;
@@ -2175,7 +2163,7 @@ cs-main-container {
 .modal-close-container {
   display: flex;
   flex-direction: row;
-  justify-content: end;
+  justify-content: flex-end;
   align-items: center;
   width: "100%";
 }

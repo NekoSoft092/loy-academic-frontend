@@ -1,4 +1,4 @@
-import { enable, isEnabled, disable } from 'tauri-plugin-autostart-api'
+import { enable, isEnabled, disable } from 'tauri-plugin-autostart-api';
 
 export interface SettingOption {
   id: string
@@ -21,8 +21,8 @@ export const SettingsList = [
     description: 'Habilitar el modo oscuro',
     enabled: false,
     toggle: async () => {
-      const newMode = ui('mode') === 'dark' ? 'light' : 'dark'
-      await ui('mode', newMode)
+      // const newMode = ui('mode') === 'dark' ? 'light' : 'dark'
+      // await ui('mode', newMode)
     },
   },
   {

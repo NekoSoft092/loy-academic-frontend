@@ -1,6 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { SettingsList } from '@/components/core/settings-list';
-import { SettingsNav } from '@/components/core/settings-nav';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ISearchUpdateResponse } from '@/lib/update';
 import { searchUpdate } from '@/lib/update';
@@ -23,11 +22,9 @@ export function SettingsView(): JSX.Element {
     store.settings[2].name
   ]);
 
-  const [ userId, isAdmin] = useAuthStore((store) => [
+  const [ userId ] = useAuthStore((store) => [
     store.userId, 
-    store.isAdmin
   ])
-
   
   const [ botName ] = useChatStore((store)=> [
     store.botName
@@ -42,26 +39,8 @@ export function SettingsView(): JSX.Element {
     setUpdateResponse(undefined);
   }
 
-  const [ admin, setAdmin] = useState<boolean>(false)
-
-  useEffect(()=> {
-    console.log(isAdmin)
-    if(!isAdmin) {
-      const email: string | null = localStorage.getItem('user-email');
-
-      if(email?.includes('@wizzysage.com') === true) {
-        setAdmin(true);
-      }
-
-    } else {
-      setAdmin(true);
-    }
-    
-  }, [isAdmin, userId])
-  
-
   return (
-    <div className="flex flex-col reset" style={onWeb(window)?{ }: {marginTop: '0px'}}>
+    <div data-theme="cupcake" className="flex flex-col" style={onWeb(window)?{ }: {paddingTop: '0px'}}>
       {isSettingsPath && (
         <AnimatePresence>
           <motion.div
@@ -70,9 +49,9 @@ export function SettingsView(): JSX.Element {
             animate={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: -50 }}
           >
-            <section className={onWeb(window)?'space-between': 'sage-view space-between'}>
+            <section className={onWeb(window)?'space-between': 'sage-view space-between'} style={{width: ''}}>
               <div>
-                <SettingsNav title='Ajustes' />
+                
                 <SettingsList />
               
                 { (enable && !onWeb(window)) && (
@@ -86,12 +65,6 @@ export function SettingsView(): JSX.Element {
                      
                       <p>Bot_name: {botName}</p>
 
-                      { ( admin )  && (
-                        <button onClick={()=>{
-                          // setModalDevelopment(true);
-                          navigate('/dev');
-                        }}>Editar</button>
-                      )}
 
                     </div>
                   </div>

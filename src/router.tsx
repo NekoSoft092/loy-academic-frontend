@@ -3,8 +3,10 @@ import { SettingsView } from './views/core/settings-view';
 import { ChatView } from './views/chat/chat-view';
 import { Protected } from './components/auth/protected';
 import { RegisterView } from './views/register/register-view';
-import { LoginView } from '@/views/login/login-view';
+import { ExistsEmailView } from '@/views/exists-email/exists-email-view';
 import { DevView } from './views/dev/dev-view';
+import { LoginView } from './views/login/login-view';
+import { RegisterTwoView } from './views/register/register-two-view';
 
 export function AppRouter(): JSX.Element {
   return (
@@ -19,6 +21,8 @@ export function AppRouter(): JSX.Element {
               </Protected>
             }
           />
+          <Route path="/is-registered" element={<ExistsEmailView />} />
+          <Route path="/register-two" element={<RegisterTwoView/>} />
           <Route path="/login" element={<LoginView />} />
           <Route path="/settings" element={<SettingsView />} />
           <Route path="/register" element={<RegisterView />} />
