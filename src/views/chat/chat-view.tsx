@@ -21,17 +21,12 @@ import { useAppStore } from '@/stores/app-store';
 import { ModalPDFComponent } from '@/components/molecules/modal-pdf/modal-pdf-component';
 
 export function ChatView(): JSX.Element {
-  /// const MESSAGES_PER_LOAD: number = 100;
 
   const [ initLoading, setInitLoading ] = useState<boolean>(false);
 
   const [ loadingMore, setLoadingMore ] = useState<boolean>(false);
 
   const [ mounted, setMounted ] = useState<boolean>(false);
-
-  // const [ offsetVar, setOffSetVar ] = useState<number>(0);
-
-  // const [ isLoadedAllMessages, setIsLoadedAllMessages ] = useState<boolean>(false);
 
   const [ userId ] = useAuthStore<string[]>((state) => [
     state.userId
@@ -110,7 +105,6 @@ export function ChatView(): JSX.Element {
 
   useEffect(()=> {
     setMessages([]);
-    // setOffSetVar(0);
     setAvailable(false)
     checkAvailable();
     init(userId);

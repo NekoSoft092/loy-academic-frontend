@@ -19,7 +19,7 @@ if(onWeb(window)){
 }
 
 export const useAppStore = create<AppStore>((set, get) => ({
-  name: 'Sage App',
+  name: 'Loy App',
   version: '0.0.0',
   settings: SettingsList,
   isLoading: false,
@@ -46,8 +46,8 @@ export const useAppStore = create<AppStore>((set, get) => ({
       if (data != null) {
         setting.enabled = data.enabled
         if (setting.id === 'dark-mode') {
-          const newMode = data.enabled ? 'dark' : 'light'
-          await ui('mode', newMode)
+          // const newMode = data.enabled ? 'dark' : 'light'
+          // await ui('mode', newMode)
         }
       }
     }

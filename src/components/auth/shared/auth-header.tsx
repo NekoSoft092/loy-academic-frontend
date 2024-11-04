@@ -15,7 +15,7 @@ export function AuthHeader(props: AuthHeaderProps): JSX.Element {
 
       <div className="flex-row justify-center align-end" style={{marginTop: '.5rem'}}>
         <h3 className="primary-text bold center-align" style={{fontFamily: 'Poppins-Medium', fontSize: '3rem'}}>Loy</h3>
-        <p style={{fontFamily: 'Poppins-Regular', fontSize: '1.5rem' }}>Academic</p>
+        <p style={{fontFamily: 'Poppins-Regular', fontSize: '1.5rem' }} className="primary">Academic</p>
       </div>
       
       {props.isLogin && !(props.isDevMode ?? false) && (

@@ -1,8 +1,8 @@
 import { type CapacitorConfig } from '@capacitor/cli'
 
 const config: CapacitorConfig = {
-  appId: 'sage.mobile.app',
-  appName: 'Sage',
+  appId: 'loy.mobile.app',
+  appName: 'Loy',
   webDir: 'dist',
   server: {
     androidScheme: 'https',

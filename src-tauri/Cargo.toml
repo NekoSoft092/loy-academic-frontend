@@ -1,16 +1,16 @@
 [package]
-name = "sage"
-version = "0.4.7"
-description = "Sage Desktop App"
-authors = ["Juan Castañeda", "Nel Alejandro Mora", "Vilma Tirado Gomez"]
-repository = "https://github.com/SageWizards/Sage-Desktop"
+name = "loy-academic"
+version = "0.0.1"
+description = "Loy Desktop App"
+authors = ["Alejandro Mora"]
+repository = "https://github.com/NekoSoft092/loy-academic-frontend"
 edition = "2021"
 
 [build-dependencies]
 tauri-build = { version = "1.2", features = [] }
 
 [dependencies]
-tauri = { version = "1.2", features = ["dialog-confirm", "dialog-message", "dialog-save", "fs-all", "global-shortcut-all", "macos-private-api", "os-all", "path-all", "shell-open", "system-tray", "updater", "window-all"] }
+tauri = { version = "1.2", features = ["dialog-confirm", "dialog-message", "dialog-save", "fs-all", "global-shortcut-all", "macos-private-api", "os-all", "path-all", "shell-open", "system-tray", "window-all"] }
 
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"

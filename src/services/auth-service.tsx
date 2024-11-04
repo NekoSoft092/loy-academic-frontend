@@ -90,7 +90,39 @@ export async function signUp(
 }
 
 // ---- Sin supertokens
+
+export interface IRegisterRequest {
+  first_name: string
+  last_name: string
+  email: string
+  password: string
+  phone_number: number
+  country_code: number
+  birth_date: string
+  user_type: string
+  university: string
+  career: string
+  gender?: string
+  referred_code?: string
+}
 const LOY_LOCAL_API: string = 'http://localhost:8000/api/v1';
+
+export async function registerService(request: IRegisterRequest): Promise<Response> {
+  const urlRegister: string = LOY_LOCAL_API + "/auth/register";
+
+  const response: Response = await fetch(
+    urlRegister, 
+    {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json'
+      }, 
+      body: JSON.stringify(request)
+    }
+  )
+  return response;
+
+} 
 
 export async function loginService(email: string, password: string): Promise<Response> {
   const loginUrl: string = LOY_LOCAL_API + "/auth/login";
@@ -108,6 +140,23 @@ export async function loginService(email: string, password: string): Promise<Res
       })
     }
   );
-  console.log(response);
+  return response;
+}
+
+export async function isRegisteredService(email: string): Promise<Response> {
+  const isRegisteredUrl: string = LOY_LOCAL_API + "/auth/is-registered";
+
+  const response: Response = await fetch(
+    isRegisteredUrl, 
+    {
+      method: 'POST', 
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email
+      })
+    }
+  );
   return response;
 }
