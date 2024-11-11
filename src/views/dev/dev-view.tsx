@@ -14,12 +14,11 @@ export function DevView(): JSX.Element {
         state.setEnvironment
     ]);
 
-    const [ bots, botName, setBotName, loadBots, clearBots ] = useChatStore((state)=> [
+    const [ bots, botName, setBotName ] = useChatStore((state)=> [
         state.bots, 
         state.botName, 
         state.setBotName, 
-        state.loadBots, 
-        state.clearbots
+       
     ])
 
     const environments: string[]= ['producción', 'staging', 'local'];
@@ -27,8 +26,6 @@ export function DevView(): JSX.Element {
     const [ activeDropdownBots, setActiveDropDownBots ] = useState<boolean>(false);
    
     useEffect(()=>{
-        clearBots();
-        loadBots();
     }, [environment]);
 
     return (
