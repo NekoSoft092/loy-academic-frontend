@@ -20,7 +20,8 @@ export function RegisterView(): JSX.Element {
     
     const [ userEmail ] = useAuthStore((store) => [ store.userEmail ]);
     const navigate = useNavigate();
-    const [ setName, setPhoneNumber, setCountry, country, setBirthDate, birthDate, theme ] = useUserStore((store) => [
+    const [ name, setName, setPhoneNumber, setCountry, country, setBirthDate, birthDate, theme ] = useUserStore((store) => [
+        store.name,
         store.setName, 
         store.setPhoneNumber, 
         store.setCountry,
@@ -33,8 +34,16 @@ export function RegisterView(): JSX.Element {
     // Functions
     const onSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
-        
+        if(userEmail.length !== 0 && name.length !== 0) {
+            navigate('/register-two')
+        }
     }
+
+    useEffect(()=>{
+        if(userEmail.length === 0) {
+            navigate('/is-registered')
+        }
+    }, [userEmail])
 
     return (
         <div data-theme={theme} className={'view'}>

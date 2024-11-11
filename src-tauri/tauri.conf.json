@@ -81,6 +81,7 @@
         "fullscreen": false,
         "resizable": true,
         "title": "Loy Desktop App",
+        "minWidth": 300,
         "width": 360,
         "height": 640, 
         "focus": true, 
