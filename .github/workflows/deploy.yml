@@ -37,8 +37,10 @@ jobs:
       - name: Deploy to Netlify
         id: netlify_deploy
         run: |
+          prod_flag="--prod"
           netlify deploy \
             --dir dist \
             --site ${{ secrets.NETLIFY_SITE_ID }} \
-            --auth ${{ secrets.NETLIFY_API_TOKEN }}
+            --auth ${{ secrets.NETLIFY_API_TOKEN }} \
+            $prod_flag
 
