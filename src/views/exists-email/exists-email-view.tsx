@@ -4,6 +4,7 @@ import { useAppStore } from '@/stores/app-store';
 import { type IErrorResponse, type IsRegisteredResponse, useAuthStore } from '@/stores/auth-store';
 import './exists-email-view.css';
 import React, { useEffect, useState } from 'react';
+import { useUserStore } from '@/stores/user-store';
 
 export function ExistsEmailView() : JSX.Element {
 
@@ -15,6 +16,11 @@ export function ExistsEmailView() : JSX.Element {
 
     const [ isRegistered ] = useAuthStore((store) => [
         store.isRegistered
+    ])
+
+    const [ theme, nextTheme ] = useUserStore((store) => [
+        store.theme, 
+        store.nextTheme
     ])
 
     const navigate = useNavigate();
@@ -46,20 +52,20 @@ export function ExistsEmailView() : JSX.Element {
     useEffect(()=>{}, [inputErrorMessage])
     
     return (
-        <div data-theme="cupcake" className={'view'}>
+        <div data-theme={theme} className={'view bg-primary'}>
         <AnimatePresence>
         <motion.div
           style={{ width: '100%', height: '100%'}}
-          className='exists-email-view'
+          className='bg-auth'
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}>
-            <main style={{width: '100%'}}>
+            <main style={{width: '100%', minWidth: '500px', maxWidth: '500px'}} className='main-container bg-base-100 rounded-md'>
 
             {(inputErrorMessage.length > 0) && (
-            <div style={{width: '100%', display: 'flex', justifyContent: 'center'}}>
+            <div style={{width: '1000%', display: 'flex', justifyContent: 'center', position: 'fixed', minWidth: '500px', maxWidth: '500px'}}>
                 <div role="alert" className="alert alert-info" 
-                style={{position: 'fixed', padding: '8px', gap: 2, marginTop: '40px', display: 'flex', width: '90%', justifyContent: 'center'}} 
+                style={{padding: '8px', gap: 2, marginTop: '40px', display: 'flex', width: '90%', justifyContent: 'center'}} 
                 onClick={()=> {setInputErrorMessage('')}}>
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -77,16 +83,19 @@ export function ExistsEmailView() : JSX.Element {
             </div>
             )}
     
+            <div>
                 <div className='header-view'>
                     <button
                         onClick={() => {
-                            navigate('/settings')
+                            nextTheme()
                         }}
-                        style={{}}
+                        style={{display: 'flex', gap: '5px'}}
                         className="">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                            <path fillRule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 0 0 0 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 0 0 0-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z" clipRule="evenodd" />
+                        <p style={{textTransform: 'capitalize'}}>{theme}</p>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
                         </svg>
+
                     </button>
                 </div>
                 
@@ -96,11 +105,10 @@ export function ExistsEmailView() : JSX.Element {
                         <h3 className="text-primary bold center-align" style={{fontFamily: 'Poppins-Medium', fontSize: '4rem'}}>Loy</h3>
                         <p style={{fontFamily: 'Poppins-Regular', fontSize: '2rem' }}>Academic</p>
                     </div>
-
                 </div>  
-            </main>
+            </div>
 
-            <div style={{width: '100%', paddingBottom: '10px'}}>
+            <div style={{ paddingBottom: '10px'}}>
                 <form onSubmit={handleSubmitFn} className='auth-form'>
                     <label className={'input input-bordered flex items-center gap-2'} style={{outlineStyle: "none", width: '100%'}}>
                         <svg
@@ -141,6 +149,7 @@ export function ExistsEmailView() : JSX.Element {
                     </p>
                 </div>
             </div>
+            </main>
         </motion.div>
         </AnimatePresence>
         </div>

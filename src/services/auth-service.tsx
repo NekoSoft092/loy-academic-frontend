@@ -105,6 +105,7 @@ export interface IRegisterRequest {
   gender?: string
   referred_code?: string
 }
+
 const LOY_LOCAL_API: string = 'http://localhost:8000/api/v1';
 
 export async function registerService(request: IRegisterRequest): Promise<Response> {

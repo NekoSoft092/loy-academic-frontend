@@ -5,6 +5,7 @@ import { useUserStore } from '@/stores/user-store';
 import { useAppStore } from '@/stores/app-store'; 
 import { useAuthStore } from '@/stores/auth-store';
 import { motion, AnimatePresence } from 'framer-motion';
+import { universitiesColombia } from '@/lib/universities';
 
  export function RegisterTwoView(): JSX.Element {
 
@@ -18,10 +19,13 @@ import { motion, AnimatePresence } from 'framer-motion';
    
    const navigate = useNavigate();
 
-   const [ name, phoneNumber, theme ] = useUserStore((store) => [
+   const [ name, phoneNumber, theme, nextTheme, university, setUniversity ] = useUserStore((store) => [
       store.name, 
       store.phoneNumber, 
-      store.theme
+      store.theme, 
+      store.nextTheme, 
+      store.university, 
+      store.setUniversity
    ]);
 
    const [ referredCode, setReferredCode ] = useState<string>('');
@@ -34,33 +38,105 @@ import { motion, AnimatePresence } from 'framer-motion';
       }
    }, [userEmail])
 
+   const onSubmit = async (e: React.FormEvent): Promise<void> => {
+           e.preventDefault();
+           if(userEmail.length !== 0 && name.length !== 0) {
+               navigate('/register-two')
+           }
+       }
+
    return (
-   <div className='view' data-theme={theme}>
+   <div className='view bg-primary' data-theme={theme}>
       <AnimatePresence>
          <motion.div style={{ width: '100%', height: '100%' }}
                initial={{ opacity: 0, y: -50 }}
                animate={{ opacity: 1, y: 0 }}
                exit={{ opacity: 0, y: -50 }}
-               className=''>
-            <main style={{ width: '100%', height: '100%'}} className='register-view'>
+               className='bg-auth'>
+             <main style={{width: '100%', minWidth: '500px', maxWidth: '500px'}} className='main-container bg-base-100 rounded-md'>
                <div>
-               <div className='header-view-login'>
-                        <button onClick={() => {
-                        navigate('/is-registered')
-                        }}>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                <path fillRule="evenodd" d="M7.28 7.72a.75.75 0 0 1 0 1.06l-2.47 2.47H21a.75.75 0 0 1 0 1.5H4.81l2.47 2.47a.75.75 0 1 1-1.06 1.06l-3.75-3.75a.75.75 0 0 1 0-1.06l3.75-3.75a.75.75 0 0 1 1.06 0Z" clipRule="evenodd" />
-                            </svg>
-                        </button>
+               <div className='header-view'>
                         <button
                             onClick={() => {
-                                navigate('/settings')
-                            }}>
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                                   <path fillRule="evenodd" d="M11.078 2.25c-.917 0-1.699.663-1.85 1.567L9.05 4.889c-.02.12-.115.26-.297.348a7.493 7.493 0 0 0-.986.57c-.166.115-.334.126-.45.083L6.3 5.508a1.875 1.875 0 0 0-2.282.819l-.922 1.597a1.875 1.875 0 0 0 .432 2.385l.84.692c.095.078.17.229.154.43a7.598 7.598 0 0 0 0 1.139c.015.2-.059.352-.153.43l-.841.692a1.875 1.875 0 0 0-.432 2.385l.922 1.597a1.875 1.875 0 0 0 2.282.818l1.019-.382c.115-.043.283-.031.45.082.312.214.641.405.985.57.182.088.277.228.297.35l.178 1.071c.151.904.933 1.567 1.85 1.567h1.844c.916 0 1.699-.663 1.85-1.567l.178-1.072c.02-.12.114-.26.297-.349.344-.165.673-.356.985-.57.167-.114.335-.125.45-.082l1.02.382a1.875 1.875 0 0 0 2.28-.819l.923-1.597a1.875 1.875 0 0 0-.432-2.385l-.84-.692c-.095-.078-.17-.229-.154-.43a7.614 7.614 0 0 0 0-1.139c-.016-.2.059-.352.153-.43l.84-.692c.708-.582.891-1.59.433-2.385l-.922-1.597a1.875 1.875 0 0 0-2.282-.818l-1.02.382c-.114.043-.282.031-.449-.083a7.49 7.49 0 0 0-.985-.57c-.183-.087-.277-.227-.297-.348l-.179-1.072a1.875 1.875 0 0 0-1.85-1.567h-1.843ZM12 15.75a3.75 3.75 0 1 0 0-7.5 3.75 3.75 0 0 0 0 7.5Z" clipRule="evenodd" />
-                                </svg>
+                                nextTheme()
+                            }}
+                            style={{display: 'flex', gap: '5px'}}
+                            className="">
+                            <p style={{textTransform: 'capitalize'}}>{theme}</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
+                            </svg>
+
                         </button>
                     </div>
+
+                    <div className=''>
+                        <div className="flex-row justify-center align-end" style={{marginTop: '0rem'}}>
+                            <h3 className="text-primary bold center-align" style={{fontFamily: 'Poppins-Medium', fontSize: '4rem'}}>Loy</h3>
+                            <p style={{fontFamily: 'Poppins-Regular', fontSize: '2rem' }}>Academic</p>
+                        </div>
+                    </div>  
+
+                    <form onSubmit={onSubmit} className='auth-form'>
+
+                        <div>
+                           <p style={{ opacity: 0.6 }} className='text-center'>
+                           Para conocerte mejor, cuéntanos si estás estudiando, y en caso afirmativo, tu universidad y carrera.
+                           </p>
+                        </div>
+
+                        <p style={{ opacity: 0.6, marginTop: 10 }}>
+                            Selecciona tu universidad:
+                        </p>
+
+                        <div className='flex flex-row justify-start content-center gap-5'>
+
+                           <details className="dropdown">
+                              
+                              <summary className="btn">Seleccionar</summary>
+
+                              <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] shadow" style={{width: 400, height: 300}}>
+
+                                 {universitiesColombia.map((item, index) => (
+                                    <li key={index} onClick={() => {
+                                       setUniversity(item.name)
+                                    }}>
+                                       <a>{item.name}</a>
+                                    </li>
+                                 ))}
+                              </ul>
+                           </details>
+
+                           <p style={{paddingTop: 13}}>{university}</p>
+
+                        </div>
+
+                        {university !== '' && (
+
+                           <div>
+                              <p style={{ opacity: 0.6, marginTop: 10 }}>
+                              Selecciona tu carrera:
+                              </p>
+
+                              <details className="dropdown">
+                              <summary className="btn m-1">open or close</summary>
+                              <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+                                 <li><a>Item 1</a></li>
+                                 <li><a>Item 2</a></li>
+                              </ul>
+                              </details>
+
+                           </div>
+                           
+
+                           
+
+
+                        )}
+                        
+                           
+
+                     </form>
 
 
                     

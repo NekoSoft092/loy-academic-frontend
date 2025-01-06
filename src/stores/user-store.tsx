@@ -1,5 +1,6 @@
 import { countries, type ICountry } from '@/lib/countries';
 import { create } from 'zustand';
+import { themes } from '@/lib/themes';
 
 export const useUserStore = create<UserStore>((set, get) => ({
     name: '', 
@@ -22,10 +23,23 @@ export const useUserStore = create<UserStore>((set, get) => ({
     setCountry: (country: ICountry): void => {
         set({country})
     }, 
-    theme: 'cupcake',
+    theme: themes[0],
+    indexSelectedTheme: 0,
     setTheme: (theme: string): void => {
         set({theme})
     }, 
+    nextTheme: (): void => {
+        const index: number = get().indexSelectedTheme
+        if (themes.length > index + 1) {
+            const theme: string = themes[index + 1]
+            set({theme})
+            set({indexSelectedTheme: index + 1})
+        } else {
+            set({theme: themes[0]})
+            set({indexSelectedTheme: 0})
+        }
+        
+    },
     university: '', 
     setUniversity: (university: string): void => {
         set({university})
@@ -48,7 +62,9 @@ export interface UserStore {
     country: ICountry
     setCountry: (country: ICountry) => void
     theme: string
+    indexSelectedTheme: number
     setTheme: (theme: string) => void
+    nextTheme: () => void
     university: string
     setUniversity: (university: string) => void
     career: string
