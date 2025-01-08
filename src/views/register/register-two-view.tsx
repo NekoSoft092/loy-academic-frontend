@@ -1,5 +1,5 @@
 import './register-view.css';
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from '@/stores/user-store';   
 import { useAppStore } from '@/stores/app-store'; 
@@ -19,18 +19,24 @@ import { universitiesColombia } from '@/lib/universities';
    
    const navigate = useNavigate();
 
-   const [ name, phoneNumber, theme, nextTheme, university, setUniversity ] = useUserStore((store) => [
+   const [ name, phoneNumber, theme, nextTheme, university, setUniversity, setTheme, setReferredCode ] = useUserStore((store) => [
       store.name, 
       store.phoneNumber, 
       store.theme, 
       store.nextTheme, 
       store.university, 
-      store.setUniversity
+      store.setUniversity, 
+      store.setTheme, 
+      store.setReferredCode
    ]);
 
-   const [ referredCode, setReferredCode ] = useState<string>('');
 
    useEffect(()=>{
+      const theme = localStorage.getItem('theme')
+      if (theme !== null) {
+         setTheme(theme)
+      }
+
       if(userEmail.length === 0) {
          navigate('/is-registered');
       } else if(name.length === 0 || phoneNumber === null) {
@@ -41,7 +47,7 @@ import { universitiesColombia } from '@/lib/universities';
    const onSubmit = async (e: React.FormEvent): Promise<void> => {
            e.preventDefault();
            if(userEmail.length !== 0 && name.length !== 0) {
-               navigate('/register-two')
+               navigate('/register-three')
            }
        }
 
@@ -58,7 +64,8 @@ import { universitiesColombia } from '@/lib/universities';
                <div className='header-view'>
                         <button
                             onClick={() => {
-                                nextTheme()
+                              localStorage.setItem('theme', theme)
+                              nextTheme()
                             }}
                             style={{display: 'flex', gap: '5px'}}
                             className="">
@@ -111,34 +118,44 @@ import { universitiesColombia } from '@/lib/universities';
 
                         </div>
 
-                        {university !== '' && (
+                        <p style={{ opacity: 0.6, marginTop: 10 }}>
+                            Has sido referido por un amigo?
+                        </p>
+                        
+                        <input type="text" placeholder="Codigo de referido" className="input w-full max-w"
+                           onChange={(e) => {
+                              setReferredCode(e.target.value)
+                           }}/>
 
-                           <div>
-                              <p style={{ opacity: 0.6, marginTop: 10 }}>
-                              Selecciona tu carrera:
-                              </p>
+                        <div style={{marginTop: '30px'}} className='flex flex-col gap-2'>
+                           <button 
+                              className="btn btn-primary reset"
+                              type='submit'
+                              disabled={false}>
+                              Siguiente
+                           </button>
 
-                              <details className="dropdown">
-                              <summary className="btn m-1">open or close</summary>
-                              <ul className="menu dropdown-content bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                                 <li><a>Item 1</a></li>
-                                 <li><a>Item 2</a></li>
-                              </ul>
-                              </details>
-
-                           </div>
-                           
-
-                           
-
-
-                        )}
+                           <div className="btn btn-active btn-secondary" onClick={() => {
+                              setReferredCode('')
+                              setUniversity('')
+                              navigate('/register-three')
+                           }}>Omitir</div>
+                        </div>
                         
                            
 
                      </form>
 
 
+                     <div style={{width: '100%'}} className='version-container-register'>
+                        <p className='version-text'>
+                              Ayuda
+                        </p>
+
+                        <p className='version-text'>
+                              version: {store.version}
+                        </p>
+                     </div>
                     
                   
                </div>

@@ -18,9 +18,10 @@ export function ExistsEmailView() : JSX.Element {
         store.isRegistered
     ])
 
-    const [ theme, nextTheme ] = useUserStore((store) => [
+    const [ theme, nextTheme, setTheme ] = useUserStore((store) => [
         store.theme, 
-        store.nextTheme
+        store.nextTheme, 
+        store.setTheme
     ])
 
     const navigate = useNavigate();
@@ -49,7 +50,12 @@ export function ExistsEmailView() : JSX.Element {
             navigate('/register');
         }
     }
-    useEffect(()=>{}, [inputErrorMessage])
+    useEffect(()=>{
+        const currentTheme = localStorage.getItem('theme')
+        if ( currentTheme !== null) {
+            setTheme(currentTheme)
+        }
+    }, [inputErrorMessage])
     
     return (
         <div data-theme={theme} className={'view bg-primary'}>

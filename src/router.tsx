@@ -7,6 +7,7 @@ import { ExistsEmailView } from '@/views/exists-email/exists-email-view';
 import { DevView } from './views/dev/dev-view';
 import { LoginView } from './views/login/login-view';
 import { RegisterTwoView } from './views/register/register-two-view';
+import { RegisterThreeView } from './views/register/register-three-view';
 
 export function AppRouter(): JSX.Element {
   return (
@@ -23,7 +24,9 @@ export function AppRouter(): JSX.Element {
           />
           <Route path="/is-registered" element={<ExistsEmailView />} />
           <Route path="/register-two" element={<RegisterTwoView/>} />
+          <Route path='/register-three' element={<RegisterThreeView/>} />
           <Route path="/login" element={<LoginView />} />
+          <Route path='/chat' element={ <ChatView />} />
           <Route path="/settings" element={<SettingsView />} />
           <Route path="/register" element={<RegisterView />} />
           <Route path="/dev" element={<DevView />} />        

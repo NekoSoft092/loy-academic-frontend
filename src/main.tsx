@@ -5,6 +5,7 @@ import { useAppStore } from './stores/app-store';
 import { useChatStore } from './stores/chat-store';
 import './normalize.css';
 import './styles.css';
+import { ModalCountryComponent } from './components/molecules/modal-country/modal-country-component';
 
 declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
@@ -27,6 +28,9 @@ useChatStore.getState().init()
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
+    <div>
+        <ModalCountryComponent title='Escoje el código de tu país'/>
         <AppRouter />
+      </div>
   </React.StrictMode>
 )

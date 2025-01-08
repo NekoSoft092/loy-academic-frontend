@@ -5,32 +5,31 @@ import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppStore } from '@/stores/app-store';
 import { useUserStore } from '@/stores/user-store';
-import { countries, type ICountry } from '@/lib/countries';
+
 
 export function RegisterView(): JSX.Element {
 
-    const store = useAppStore((state) => ({
-        version: state.version,
-        settings: state.settings,
-        isDevBuild: state.isDevBuild,
-    }));
+    const [ toggleModalActive, version ] = useAppStore((store) => [
+        store.toggleModalActive,
+        store.version
+    ]);
     
     const [ userEmail ] = useAuthStore((store) => [ store.userEmail ]);
     const navigate = useNavigate();
-    const [ name, setName, setPhoneNumber, setCountry, country, theme, nextTheme ] = useUserStore((store) => [
+    const [ name, setName, setPhoneNumber, country, theme, nextTheme, phoneNumber ] = useUserStore((store) => [
         store.name,
         store.setName, 
         store.setPhoneNumber, 
-        store.setCountry,
         store.country, 
         store.theme, 
-        store.nextTheme
+        store.nextTheme, 
+        store.phoneNumber
     ]);
 
     // Functions
     const onSubmit = async (e: React.FormEvent): Promise<void> => {
         e.preventDefault();
-        if(userEmail.length !== 0 && name.length !== 0) {
+        if(userEmail.length !== 0 && name.length !== 0 && phoneNumber !== null) {
             navigate('/register-two')
         }
     }
@@ -133,36 +132,14 @@ export function RegisterView(): JSX.Element {
                         <div className='flex gap-1'>
                             <div>
                                 <div className="btn" style={{width: '100px'}} onClick={()=>{
-                                        (document?.getElementById('my_modal_1') as HTMLDialogElement).showModal()
+                                        toggleModalActive()
                                     }}
                                 >
                                 <img src={country.url} alt="default-flag" height='30px' width='30px'/>
                                 <p style={{opacity: 0.6}}>+{country.country_code}</p>
                                 </div>
 
-                                <dialog id="my_modal_1" className="modal">
-                                <div className="modal-box">
-                                  
-                                    <p className="py-4">Escoje el codigo de tu pais</p>
-                                    <div className="modal-action">
-                                        <form method="dialog" style={{display: 'flex', flexDirection: 'column', alignContent: 'flex-start', justifyContent: 'flex-start'}}>
-                                            {countries.map((countryMap: ICountry, index: number)=>{
-                                                return (
-                                                <button key={index} className='capitalized flex content-center items-center gap-4 py-2 px-4' style={{width: '300px'}}
-                                                    onClick={(e:  React.FormEvent) => {
-                                                        
-                                                        setCountry(countryMap);
-                                                    }}
-                                                >
-                                                    <img src={countryMap.url} alt="" width={50}/>
-                                                    <p>{countryMap.name} (+{countryMap.country_code})</p>
-                                                </button>
-                                                )
-                                            })}
-                                        </form>
-                                    </div>
-                                </div>
-                                </dialog>
+                                
                             </div>
                             <input 
                                 type="text"
@@ -175,9 +152,9 @@ export function RegisterView(): JSX.Element {
                                 />
                         </div>    
                 
-                        <div className='btn btn-primary reset' style={{marginTop: '70px'}}>
+                        <div className='' style={{marginTop: '70px', width: '100%'}}>
                             <button 
-                                className=""
+                                className="btn btn-primary reset w-full"
                                 style={{}}
                                 type='submit'
                                 disabled={false}>
@@ -192,7 +169,7 @@ export function RegisterView(): JSX.Element {
                     </p>
 
                     <p className='version-text'>
-                        version: {store.version}
+                        version: {version}
                     </p>
                 </div>
                 

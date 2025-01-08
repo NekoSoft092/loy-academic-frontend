@@ -27,6 +27,8 @@ export const useUserStore = create<UserStore>((set, get) => ({
     indexSelectedTheme: 0,
     setTheme: (theme: string): void => {
         set({theme})
+        const newIndex: number = themes.indexOf(theme)
+        set({indexSelectedTheme: newIndex})
     }, 
     nextTheme: (): void => {
         const index: number = get().indexSelectedTheme
@@ -34,9 +36,11 @@ export const useUserStore = create<UserStore>((set, get) => ({
             const theme: string = themes[index + 1]
             set({theme})
             set({indexSelectedTheme: index + 1})
+            localStorage.setItem('theme', theme)
         } else {
             set({theme: themes[0]})
             set({indexSelectedTheme: 0})
+            localStorage.setItem('theme', themes[0])
         }
         
     },
@@ -47,6 +51,10 @@ export const useUserStore = create<UserStore>((set, get) => ({
     career: '', 
     setCareer: (career: string): void => {
         set({career})
+    }, 
+    referredCode: '', 
+    setReferredCode: (code: string):void => {
+        set({referredCode: code})
     }
 }));
 
@@ -69,4 +77,6 @@ export interface UserStore {
     setUniversity: (university: string) => void
     career: string
     setCareer: (career: string) => void
+    referredCode: string
+    setReferredCode: (code: string) => void
 }
