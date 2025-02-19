@@ -12,9 +12,10 @@ export function Protected({ children }: ProtectedProps): JSX.Element {
   useEffect(() => {
     checkSignIn()
       .then((data) => {
-        if (!data) {
-          console.log('llego')
+        if (data) {
           navigate('/');
+        } else {
+          navigate('/is-registered')
         }
       })
       .catch((err) => {

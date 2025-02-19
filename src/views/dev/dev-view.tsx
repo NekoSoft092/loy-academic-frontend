@@ -21,7 +21,7 @@ export function DevView(): JSX.Element {
        
     ])
 
-    const environments: string[]= ['producción', 'staging', 'local'];
+    const environments: string[]= ['production', 'staging', 'local'];
     const [ activeDropdown, setActiveDropDown ] = useState<boolean>(false);
     const [ activeDropdownBots, setActiveDropDownBots ] = useState<boolean>(false);
    

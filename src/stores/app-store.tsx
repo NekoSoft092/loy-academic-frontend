@@ -6,7 +6,7 @@ import { InitWeb } from '@/lib/init/init-web';
 import type { IInit } from '@/lib/init/init';
 import { onWeb } from '@/lib/windows';
 import { InitTauri } from '@/lib/init/init-tauri';
-import { getHealth } from '@/services/sage-service';
+import { getHealth } from '@/services/app-service';
 
 const store = createDataStorage<SettingData>();
 
@@ -88,6 +88,14 @@ export const useAppStore = create<AppStore>((set, get) => ({
       await registerShortcuts()
     }
   },
+  modalActive: false, 
+  toggleModalActive: (): void => {
+    if (get().modalActive) {
+      set({modalActive: false})
+    } else {
+      set({modalActive: true})
+    }
+  }
 }))
 
 export interface SettingData {
@@ -110,5 +118,7 @@ export interface AppStore {
   setEnvironment: (newEnvironment: 'stg' | 'prod' | 'local') => void
   setAvailable: (pAvailable: boolean) => void 
   init: () => Promise<void>
+  modalActive: boolean 
+  toggleModalActive: () => void
 }
 

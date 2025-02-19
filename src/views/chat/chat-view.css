@@ -677,7 +677,8 @@ cs-main-container {
 }
 .cs-message-list__scroll-wrapper > .cs-message,
 .cs-message-list__scroll-wrapper > .cs-message-group {
-  max-width: 85%;
+  max-width: 100%;
+  
 }
 .cs-message-list .cs-message.cs-message--incoming,
 .cs-message-list .cs-message-group.cs-message-group--incoming {
@@ -2201,4 +2202,17 @@ cs-main-container {
 .txt-message {
   font-family: Open-Sans;
   font-size: 15px;
+}
+
+/* Spotify button */
+.spotify-button {
+  background-color: #1DB954;
+  color: #FFF;
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  font-size: 15px;
+  font-family: Open-Sans;
+  font-weight: 600;
+  cursor: pointer;
 }

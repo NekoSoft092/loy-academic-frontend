@@ -1,0 +1,8 @@
+.modal-country {
+    background-color: transparent;
+    backdrop-filter: blur(5px);
+}
+
+.modal-close {
+    cursor: pointer;
+}

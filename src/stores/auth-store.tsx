@@ -1,7 +1,5 @@
 import { create } from 'zustand';
-import { doesSessionExist, getUserId } from 'supertokens-web-js/recipe/session';
-import { signOut } from 'supertokens-web-js/recipe/emailpassword';
-import { type AuthResponse, signUp, loginService, isRegisteredService } from '@/services/auth-service';
+import { loginService, isRegisteredService, registerService, type IRegisterRequest, validateLoginService } from '@/services/auth-service';
 import { useChatStore } from './chat-store';
 
 class ApiErrorResponse implements IErrorResponse {
@@ -16,7 +14,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   token: '',
   userId: '',
   userEmail: '',
-  isSignedIn: true,
+  isSignedIn: false,
   signIn: async (email: string, password: string): Promise<ILoginResponse | ILoginResponseError> => {
     
     try {
@@ -78,55 +76,57 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     set({isSignedIn: signed})
   },
   signUp: async (
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string
-  ) => {
-    const response = await signUp(firstName, lastName, email, password)
-    if (response.status === 'OK') {
-      set({ userId: response.user?.id ?? '' });
+    data:  IRegisterRequest 
+  ): Promise<ILoginResponse|ILoginResponseError>  => {
+    try {
+      const response: Response = await registerService(data)
 
-      // Save user-id on localStorage
-      if(response.user?.id !== undefined) {
-        localStorage.setItem('user-id', response.user.id);
-      }
-     
-      set({ userEmail: response.user?.email});
-      // Save user-email on localStorage
-      if(response.user?.email !== undefined) {
-        localStorage.setItem('user-email', response.user.email);
-      }
+      if (response.status === 201) {
+        const resp: ILoginResponse = await response.json()
 
-      set({ isSignedIn: true });
+        // Save user-id on localStorage
+        if(resp.user_id !== undefined) {
+          localStorage.setItem('user-id', resp.user_id);
+          set({ userId: resp.user_id });
+        }
+
+        set({ isSignedIn: true });
+        return resp
+      } else {
+        return await response.json()
+      }
     }
-    return response
+    catch(error) {
+      return new ApiErrorResponse('Estamos presentando inconvenientes en este momento. Vuelve a intentarlo más tarde');
+    }
   },
   logout: async () => {
-    await signOut();
-    set({ isSignedIn: false });
-    set({ userId: '' });
-    set({ userEmail: ''});
-    localStorage.removeItem('user-id');
-    localStorage.removeItem('user-email');
+    set({ isSignedIn: false })
+    set({ userId: '' })
+    set({ userEmail: ''})
+    localStorage.removeItem('user-id')
+    localStorage.removeItem('user-email')
     useChatStore.getState().clearMessages()
   },
-  checkSignIn: async () => {
-    const isSignedIn = get().isSignedIn
-    if (get().userId === '') {
-      const userId = await getUserId()
-      set({ userId })
-    }
-    if (!isSignedIn) {
-      const sessionExists = await doesSessionExist()
-      const userId = await getUserId()
-      if (sessionExists) {
-        set({ isSignedIn: true })
-        set({ userId })
+  checkSignIn: async (): Promise<boolean | ApiErrorResponse> => {
+    const userToken: string | null = localStorage.getItem('token')
+    const userId: string | null = localStorage.getItem('user-id')
+    if (userToken !== null && userId !== null) {
+      try {
+        const response: Response = await validateLoginService(userId, userToken)
+        if (response.status ===  200) {
+          const resp = (await response.json()) as ValidateLoginResponse
+          return resp.validate_login
+        } else {
+          const resp = (await response.json()) as IErrorResponse
+          return new ApiErrorResponse(resp.detail)
+        }
+
+      } catch (error) {
+        return new ApiErrorResponse('Estamos presentando inconvenientes en este momento. Vuelve a intentarlo más tarde');
       }
-      return sessionExists
     }
-    return isSignedIn
+    return false
   },
 }))
 
@@ -141,13 +141,10 @@ export interface AuthStore {
   setUserEmail: (email: string) => void 
   setIsSignedIn: (signed: boolean) => void
   signUp: (
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string
-  ) => Promise<AuthResponse>
+    data:  IRegisterRequest 
+  ) => Promise<ILoginResponse|ILoginResponseError> 
   logout: () => Promise<void>
-  checkSignIn: () => Promise<boolean>
+  checkSignIn: () => Promise<boolean | ApiErrorResponse> 
   isRegistered: (email: string) => Promise<IsRegisteredResponse|IErrorResponse>
 }
 
@@ -166,7 +163,12 @@ export interface IsRegisteredResponse {
   is_registered: boolean
 }
 
+export interface ValidateLoginResponse {
+  validate_login: boolean 
+}
+
 // global
 export interface IErrorResponse {
   detail: string;
 }
+

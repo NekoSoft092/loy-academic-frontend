@@ -1,12 +1,15 @@
 import './chat-form-component.css'
-import TextareaAutosize from 'react-textarea-autosize'
 import { useRef } from 'react'
 import { useChatStore } from '@/stores/chat-store'
-
+import { useAuthStore } from '@/stores/auth-store';
 
 export function ChatFormComponent(): JSX.Element {
 
-    const inputref = useRef<HTMLTextAreaElement>(null);
+    const inputref = useRef<HTMLInputElement>(null);
+
+    const [ userId ] = useAuthStore((store)=> [
+      store.userId
+    ])
 
     const [ addMessage ] = useChatStore((state) => [
       state.addMessage
@@ -37,7 +40,7 @@ export function ChatFormComponent(): JSX.Element {
 
       // De Morgan 
       if(!onlyEnter && !onlySpace && !((counterEnter + counterSpace) === message.length) && message.length > 3) {
-        addMessage(message);
+        addMessage(message, userId);
         if(inputref.current !== null) {
           inputref.current.value = '';
         }
@@ -46,7 +49,7 @@ export function ChatFormComponent(): JSX.Element {
 
     return (
         <div
-        className='chat-form-component'
+        className='chat-form-component bg-base-100'
         as="MessageInput"
         > 
         <div
@@ -54,31 +57,28 @@ export function ChatFormComponent(): JSX.Element {
             margin: 0,
             width: '100%',
             height: 'auto',
-            maxHeight: '140px',
             boxSizing: 'border-box',
           }}
           className="textarea round fill"
         >
-          <TextareaAutosize
+
+        <label className="input input-bordered flex items-center gap-2">
+          <input type="text"
             ref={inputref}
-            className="chat-textarea"
-            rows={1}
-            style={{
-              overflowY: 'hidden',
-              height: 32,
-            }}
-            placeholder="Ingresa tu mensaje aquí"
+            className="grow" 
+            placeholder="Envia un mensaje a Elena..." 
             onKeyUp={(e) => {
               if(e.key === 'Enter' && !e.shiftKey) {
                 handleSendMessage();
               }
-            }}
-          />
+            }}/>
+          <button onClick={handleSendMessage} className="circle fill bg-base-100">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+            </svg>
+          </button>
+        </label>
         </div>
-
-        <button onClick={handleSendMessage} className="circle fill">
-          <i>send</i>
-        </button>
       </div>
     )
 }

@@ -1,16 +1,16 @@
 .message-component {
-    margin-top: 400px;
-    z-index: 99;
+    z-index: 3;
+    width: 100%;
 }
 
-.code-wrapper {
-    width: 100%;
+.code-wrapperr {
+    width: 80%;
     border-radius: 5px;
     padding: 2px;
 }
 
 .code-content {
-    font-size: 14px;
+    font-size: 15px;
     line-height: 0px;
     letter-spacing: 0px;
     border-radius: 0px;
@@ -38,7 +38,7 @@
     cursor: pointer;
 }
 
-.ma{
+.maa {
     margin-top: -35px;
 }
 
