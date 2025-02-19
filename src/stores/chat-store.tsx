@@ -1,4 +1,4 @@
-import { loadMessagesRequest, talkWithIA } from '@/services/sage-service';
+import { loadMessagesRequest, talkWithIA } from '@/services/app-service';
 import { create } from 'zustand';
 
 export const useChatStore = create<ChatStore>((set, get) => ({
@@ -30,35 +30,41 @@ export const useChatStore = create<ChatStore>((set, get) => ({
     set({ isLoadingMoreMessages: true })
   },
 
-  addMessage: async (message: string) => {
-    set({ isTyping: true })
-    const messages = get().messages
-    messages.push({
-      id: 'temp',
-      message,
-      sender: 'user',
-      sentTime: new Date().toString(),
-      direction: 'outgoing',
-      bot_id: ""
-    })
-    set({ messages })
-    try {
-      const response = await talkWithIA(message);
-      const dataResponse = await response.json()
-      messages.push({
-        id: "id_bot",
-        message: await dataResponse.message,
-        sender: 'bot',
-        sentTime: new Date().toString(),
-        direction: 'incoming',
-        bot_id: "bot_id"
-      })
-  
-      set({ messages, isTyping: false })
+  addMessage: async (message: string, userId: string) => {
+    let userIdFallback: string | null = userId
+    if(userId === '') {
+      userIdFallback = localStorage.getItem('user-id') !== null? localStorage.getItem('user-id'): ''
     }
-    catch(e: any) {
-      set({ error: e.message })
-      set({ isTyping: false })
+    if (userIdFallback !== null) {
+      set({ isTyping: true })
+      const messages = get().messages
+      messages.push({
+        id: userIdFallback,
+        message,
+        sender: 'user',
+        sentTime: new Date().toString(),
+        direction: 'outgoing',
+        bot_id: ""
+      })
+      set({ messages })
+      try {
+        const response = await talkWithIA(message, userIdFallback);
+        const dataResponse = await response.json()
+        messages.push({
+          id: "id_bot",
+          message: await dataResponse.message,
+          sender: 'bot',
+          sentTime: new Date().toString(),
+          direction: 'incoming',
+          bot_id: "bot_id"
+        })
+    
+        set({ messages, isTyping: false })
+      }
+      catch(e: any) {
+        set({ error: e.message })
+        set({ isTyping: false })
+      }
     }
   },
   clearMessages: () => {
@@ -124,7 +130,7 @@ export interface ChatStore {
   isLoadingMoreMessages: boolean;
   bots: IBot[];
   loadMessages: (userId: string, skip: number, limit: number) => Promise<void> 
-  addMessage: (message: string) => void;
+  addMessage: (message: string, userId: string) => void;
   clearMessages: () => void;
   error: string;
   closeMessageError: () => void;

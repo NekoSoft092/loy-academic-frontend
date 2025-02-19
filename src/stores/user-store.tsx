@@ -1,5 +1,6 @@
 import { countries, type ICountry } from '@/lib/countries';
 import { create } from 'zustand';
+import { getGeneralUserInformation} from '@/services/user-service';
 import { themes } from '@/lib/themes';
 
 export const useUserStore = create<UserStore>((set, get) => ({
@@ -42,7 +43,6 @@ export const useUserStore = create<UserStore>((set, get) => ({
             set({indexSelectedTheme: 0})
             localStorage.setItem('theme', themes[0])
         }
-        
     },
     university: '', 
     setUniversity: (university: string): void => {
@@ -55,7 +55,23 @@ export const useUserStore = create<UserStore>((set, get) => ({
     referredCode: '', 
     setReferredCode: (code: string):void => {
         set({referredCode: code})
-    }
+    }, 
+    getGeneralInformacion: async (userId: string): Promise<void> => {
+        const response: Response = await getGeneralUserInformation(userId)
+        console.log('response', response)
+        if (response.status === 200) {
+            const data: any = await response.json()
+            console.log('data', data)
+            set({name: data.name})
+            set({email: data.email})
+            if(data.spotify_token !== null) {
+                localStorage.setItem('spotify-token', data.spotify_token)
+                set({spotifyToken: data.spotify_token})
+            }
+            set({university: data.university})
+        }
+    }, 
+    spotifyToken: localStorage.getItem('spotify-token')
 }));
 
 export interface UserStore {
@@ -79,4 +95,6 @@ export interface UserStore {
     setCareer: (career: string) => void
     referredCode: string
     setReferredCode: (code: string) => void
+    getGeneralInformacion: (userId: string) => Promise<void>  
+    spotifyToken: string | null
 }

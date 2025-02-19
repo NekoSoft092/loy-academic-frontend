@@ -1,15 +1,13 @@
 
 const LOY_LOCAL_API: string = 'http://localhost:8000/api/v1';
 
-
-
 export async function getHealth(): Promise<boolean> {
   const urlApi: string = LOY_LOCAL_API;
   const response = await fetch(`${urlApi}/health`);
   return response.status === 200;
 }
 
-export async function talkWithIA(message: string): Promise<Response>{
+export async function talkWithIA(message: string, userId: string): Promise<Response>{
   const talkUrl: string = LOY_LOCAL_API + "/messages";
   const response: Response = await fetch(
     talkUrl, 
@@ -21,7 +19,7 @@ export async function talkWithIA(message: string): Promise<Response>{
       body: JSON.stringify({
         message,
         testing: false, 
-        user_id: "fed7f7d8-ecc0-4cb4-a001-5781c2f2b985"
+        user_id: userId
       })
     }
   );

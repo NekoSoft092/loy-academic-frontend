@@ -16,7 +16,6 @@ const LOY_LOCAL_API: string = 'http://localhost:8000/api/v1';
 
 export async function registerService(request: IRegisterRequest): Promise<Response> {
   const urlRegister: string = LOY_LOCAL_API + "/auth/register";
-
   const response: Response = await fetch(
     urlRegister, 
     {
@@ -28,12 +27,10 @@ export async function registerService(request: IRegisterRequest): Promise<Respon
     }
   )
   return response;
-
 } 
 
 export async function loginService(email: string, password: string): Promise<Response> {
   const loginUrl: string = LOY_LOCAL_API + "/auth/login";
-
   const response: Response = await fetch(
     loginUrl, 
     {
@@ -52,7 +49,6 @@ export async function loginService(email: string, password: string): Promise<Res
 
 export async function isRegisteredService(email: string): Promise<Response> {
   const isRegisteredUrl: string = LOY_LOCAL_API + "/auth/is-registered";
-
   const response: Response = await fetch(
     isRegisteredUrl, 
     {
@@ -82,6 +78,21 @@ export async function validateLoginService(userId: string, token: string): Promi
         auth_token: token
       })
     }
+  );
+  return response;
+}
+
+export async function loginSpotifyCallbackService(code: string, state: string, userId: string): Promise<Response> {
+  const url: string = LOY_LOCAL_API + "/auth/spotify-callback?code=" + code + "&state=" + state + "&user_id=" + userId;
+  const response: Response = await fetch(
+    url, 
+    {
+      method: 'GET', 
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }
+
   );
   return response;
 }

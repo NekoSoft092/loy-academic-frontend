@@ -151,3 +151,11 @@ p, a, input, label, span {
   background-image: url("/assets/imgs/icons/app-icon.svg");
   background-size: 65px;
 }
+
+.bg-register {
+  display: flex;
+  flex-direction: column;
+  background-color: transparent;
+  background-image: url("/assets/imgs/icons/app-icon.svg");
+  background-size: 65px;
+}

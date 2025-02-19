@@ -27,10 +27,10 @@ useChatStore.getState().init()
   });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  <React.Fragment>
     <div>
         <ModalCountryComponent title='Escoje el código de tu país'/>
         <AppRouter />
       </div>
-  </React.StrictMode>
+  </React.Fragment>
 )

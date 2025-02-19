@@ -6,7 +6,7 @@ import { InitWeb } from '@/lib/init/init-web';
 import type { IInit } from '@/lib/init/init';
 import { onWeb } from '@/lib/windows';
 import { InitTauri } from '@/lib/init/init-tauri';
-import { getHealth } from '@/services/sage-service';
+import { getHealth } from '@/services/app-service';
 
 const store = createDataStorage<SettingData>();
 

@@ -8,6 +8,7 @@ import { DevView } from './views/dev/dev-view';
 import { LoginView } from './views/login/login-view';
 import { RegisterTwoView } from './views/register/register-two-view';
 import { RegisterThreeView } from './views/register/register-three-view';
+import { SpotifyCallbackView } from './views/callback/spotify-callback-view';
 
 export function AppRouter(): JSX.Element {
   return (
@@ -29,9 +30,23 @@ export function AppRouter(): JSX.Element {
           <Route path='/chat' element={ <ChatView />} />
           <Route path="/settings" element={<SettingsView />} />
           <Route path="/register" element={<RegisterView />} />
+          <Route path="/auth/spotifycallback" element={<SpotifyCallbackView />} />
           <Route path="/dev" element={<DevView />} />        
           </Routes>
       </Router>
     </>
   )
+}
+
+export enum RoutePath {
+  ROOT = '/',
+  IS_REGISTERED = '/is-registered',
+  REGISTER_TWO = '/register-two',
+  REGISTER_THREE = '/register-three',
+  LOGIN = '/login',
+  CHAT = '/chat',
+  SETTINGS = '/settings',
+  REGISTER = '/register',
+  SPOTIFY_CALLBACK = '/auth/spotifycallback',
+  DEV = '/dev'
 }

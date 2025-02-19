@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { signOut } from 'supertokens-web-js/recipe/emailpassword';
 import { loginService, isRegisteredService, registerService, type IRegisterRequest, validateLoginService } from '@/services/auth-service';
 import { useChatStore } from './chat-store';
 
@@ -84,11 +83,11 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
 
       if (response.status === 201) {
         const resp: ILoginResponse = await response.json()
-        set({ userId: resp.user_id ?? '' });
 
         // Save user-id on localStorage
         if(resp.user_id !== undefined) {
           localStorage.setItem('user-id', resp.user_id);
+          set({ userId: resp.user_id });
         }
 
         set({ isSignedIn: true });
@@ -102,7 +101,6 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     }
   },
   logout: async () => {
-    await signOut();
     set({ isSignedIn: false })
     set({ userId: '' })
     set({ userEmail: ''})

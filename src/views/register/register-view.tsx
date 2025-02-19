@@ -138,8 +138,6 @@ export function RegisterView(): JSX.Element {
                                 <img src={country.url} alt="default-flag" height='30px' width='30px'/>
                                 <p style={{opacity: 0.6}}>+{country.country_code}</p>
                                 </div>
-
-                                
                             </div>
                             <input 
                                 type="text"
