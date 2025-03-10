@@ -9,6 +9,9 @@ import { LoginView } from './views/login/login-view';
 import { RegisterTwoView } from './views/register/register-two-view';
 import { RegisterThreeView } from './views/register/register-three-view';
 import { SpotifyCallbackView } from './views/callback/spotify-callback-view';
+import { AssistantsView } from './views/assistants/assistants-view';
+import { HomeView } from './views/home/home-view';
+import { MarketplaceView } from './views/marketplace/marketplace-view';
 
 export function AppRouter(): JSX.Element {
   return (
@@ -31,7 +34,10 @@ export function AppRouter(): JSX.Element {
           <Route path="/settings" element={<SettingsView />} />
           <Route path="/register" element={<RegisterView />} />
           <Route path="/auth/spotifycallback" element={<SpotifyCallbackView />} />
-          <Route path="/dev" element={<DevView />} />        
+          <Route path="/dev" element={<DevView />} />
+          <Route path='/assistants' element={<AssistantsView />}/>
+          <Route path='/home' element={<HomeView />}/>
+          <Route path='/marketplace' element={<MarketplaceView />}/> 
           </Routes>
       </Router>
     </>
@@ -48,5 +54,8 @@ export enum RoutePath {
   SETTINGS = '/settings',
   REGISTER = '/register',
   SPOTIFY_CALLBACK = '/auth/spotifycallback',
-  DEV = '/dev'
+  DEV = '/dev', 
+  ASSISTANS = '/assistants',
+  HOME = '/home',
+  MARKETPLACE = '/marketplace',
 }
