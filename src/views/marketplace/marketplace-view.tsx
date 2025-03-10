@@ -7,7 +7,7 @@ import { useAuthStore } from '@/stores/auth-store';
 import { AnimatePresence, motion } from 'framer-motion';
 import '@/components/organisms/header/header-component.css'
 
-export function HomeView(): JSX.Element {
+export function MarketplaceView(): JSX.Element {
 
     const [initLoading, setInitLoading] = useState<boolean>(false);
 

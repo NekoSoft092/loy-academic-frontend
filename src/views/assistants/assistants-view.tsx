@@ -1,13 +1,15 @@
+import { useUserStore } from '@/stores/user-store';
+import { AnimatePresence, motion } from 'framer-motion';
 import { type NavigateFunction, useNavigate } from 'react-router-dom';
+import { RoutePath } from '@/router'
 import { SideBarComponent } from '@/components/organisms/side-bar/side-bar-component';
 import { useEffect, useState } from 'react';
-import { useUserStore } from '@/stores/user-store';
-import { RoutePath } from '@/router';
 import { useAuthStore } from '@/stores/auth-store';
-import { AnimatePresence, motion } from 'framer-motion';
 import '@/components/organisms/header/header-component.css'
+import { type IBot, useAppStore } from '@/stores/app-store';
+import { LOY_LOCAL_API } from '@/services/app-service'
 
-export function HomeView(): JSX.Element {
+export function AssistantsView(): JSX.Element {
 
     const [initLoading, setInitLoading] = useState<boolean>(false);
 
@@ -22,8 +24,12 @@ export function HomeView(): JSX.Element {
     ])
 
     const [setUserId] = useAuthStore((state) => [
-            state.setUserId
-        ])
+        state.setUserId
+    ])
+
+    const [bots] = useAppStore((state) => [
+        state.bots
+    ])
 
     const init = async (id: string): Promise<void> => {
         if (id.length > 0) {
@@ -67,9 +73,9 @@ export function HomeView(): JSX.Element {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -50 }}
                         className='flex'>
-                        <SideBarComponent userName={name}/>
+                        <SideBarComponent userName={name} />
                         <main style={{ width: '80%', minWidth: '0px', maxWidth: '2000px' }} className='bg-base-100 bg-register'>
-                        <header className='header-container bg-base-200 flex justify-between pl-5 pr-5' style={{ height: '70px', width: '80%' }} as="ConversationHeader">
+                            <header className='header-container bg-base-200 flex justify-between pl-5 pr-5' style={{ height: '70px', width: '80%' }} as="ConversationHeader">
                                 <div className='flex col justify-center'>
                                     <h2 className='text-center bold mt-4' style={{fontSize: 25}}></h2>
                                 </div>
@@ -88,10 +94,55 @@ export function HomeView(): JSX.Element {
                                     </button>
                                 </div>
                             </header>
+
+                            <div style={{ marginTop: '70px' }} className=' flex bg-base-100 p-4 gap-2'>
+                                <label className="input flex justify-center items-center gap-2 border-spacing-5">
+                                    <svg className="h-5 opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2.5" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></g></svg>
+                                    <input type="search" required placeholder="Buscar la materia" /> 
+                                </label>
+                                <p className='text-center text-sm mt-7 ' style={{opacity: 0.5}}>Por ejemplo: MATE1033 o Calculo Diferencial</p>
+                            </div>
+
+                            <div style={{ overflow: 'scroll', scrollBehavior: 'smooth', marginTop: '10px' }}
+                                className="grid grid-cols-1 gap-4 p-4">
+
+                                {bots.map((bot: IBot, index: number) => (
+                                    <div key={index} className="card card-side bg-base-100 shadow-sm p-4">
+                                        <figure>
+                                            {bot.image_url == null && (
+                                                <img
+                                                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTE1eq7oitrNeZF5a_cO6UoIr55ddmhuhGycg&s"
+                                                    style={{ width: '200px', height: '200px' }}
+                                                    className=''
+                                                    alt="bot" />
+                                            )}
+                                            {bot.image_url != null && (
+                                                <img
+                                                    src={LOY_LOCAL_API + "/bots/" + bot.id + "/image"}
+                                                    style={{ width: '200px', height: '200px' }}
+                                                    className=''
+                                                    alt="bot" />
+                                            )}
+
+                                        </figure>
+                                        <div className="card-body" style={{ width: '70%' }}>
+                                            <h2 className="card-title">{bot.name}</h2>
+                                            <p>{bot.description}</p>
+                                            <div className="card-actions justify-between">
+                                                <div className='bg-warning p-2 flex gap-2'>
+                                                    <p className='text-warning-content text-xs'>experimental</p>
+                                                </div>
+                                                <button className="btn btn-primary">Comenzar</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+
                         </main>
                     </motion.div>
                 </AnimatePresence>
             )}
         </div>
-    )
+    );
 }

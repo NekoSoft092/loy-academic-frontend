@@ -6,7 +6,7 @@ import { InitWeb } from '@/lib/init/init-web';
 import type { IInit } from '@/lib/init/init';
 import { onWeb } from '@/lib/windows';
 import { InitTauri } from '@/lib/init/init-tauri';
-import { getHealth } from '@/services/app-service';
+import { getHealth, getAllBots } from '@/services/app-service';
 
 const store = createDataStorage<SettingData>();
 
@@ -20,11 +20,12 @@ if(onWeb(window)){
 
 export const useAppStore = create<AppStore>((set, get) => ({
   name: 'Loy App',
-  version: '0.0.0',
+  version: '0.0.1',
   settings: SettingsList,
   isLoading: false,
   isAvailable: false,
-  environment: 'stg',
+  environment: process.env.NODE_ENV === 'production' ? 'prod' : 'local',
+  bots: [],
   isDevBuild: () => {
     const version = get().version
     return version.includes('dev')
@@ -39,7 +40,6 @@ export const useAppStore = create<AppStore>((set, get) => ({
     set({ version });
   },
   loadSettings: async () => {
-
     const settings = get().settings;
     for (const setting of settings) {
       const data = await store.get({ key: setting.id });
@@ -52,6 +52,13 @@ export const useAppStore = create<AppStore>((set, get) => ({
       }
     }
     set({ settings })
+  },
+  getAllBots: async (): Promise<void> => {
+    const response = await getAllBots();
+    if (response.status === 200) {
+      const data = await response.json();
+      set({ bots: data.bots });
+    }
   },
   toggleSetting: async (id: string): Promise<void> => {
     const settings = get().settings
@@ -83,6 +90,7 @@ export const useAppStore = create<AppStore>((set, get) => ({
     await get().fetchAppData();
     await get().loadSettings();
     await get().getBackendHealth();
+    await get().getAllBots();
 
     if(!onWeb(window)) {
       await registerShortcuts()
@@ -102,12 +110,21 @@ export interface SettingData {
   enabled: boolean
 }
 
+export interface IBot {
+  id: string
+  name: string
+  context: string
+  description: string
+  image_url: string | null
+}
+
 export interface AppStore {
   name: string;
   version: string;
   isAvailable: boolean;
   settings: SettingOption[];
   environment: 'stg' | 'prod' | 'local' 
+  bots: IBot[]
   isDevBuild: () => boolean
   fetchAppData: () => Promise<void>
   toggleSetting: (id: string) => Promise<void>
@@ -120,5 +137,6 @@ export interface AppStore {
   init: () => Promise<void>
   modalActive: boolean 
   toggleModalActive: () => void
+  getAllBots: () => Promise<void>
 }
 

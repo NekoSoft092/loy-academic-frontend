@@ -6,6 +6,11 @@ import { useChatStore } from './stores/chat-store';
 import './normalize.css';
 import './styles.css';
 import { ModalCountryComponent } from './components/molecules/modal-country/modal-country-component';
+import * as Sentry from "@sentry/browser";
+
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'prod') {
+  Sentry.init({ dsn: "https://9aea4bcc1c5844a5bc12566b5749b5bb@app.glitchtip.com/10302"});
+}
 
 declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {

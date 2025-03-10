@@ -1,14 +1,20 @@
 
-const LOY_LOCAL_API: string = 'http://localhost:8000/api/v1';
+export const LOY_LOCAL_API: string = 'http://localhost:8000/api/v1';
 
 export async function getHealth(): Promise<boolean> {
-  const urlApi: string = LOY_LOCAL_API;
-  const response = await fetch(`${urlApi}/health`);
-  return response.status === 200;
+  const urlApi: string = LOY_LOCAL_API
+  const response = await fetch(`${urlApi}/health`)
+  return response.status === 200
+}
+
+export async function getAllBots(): Promise<Response> {
+  const url: string = LOY_LOCAL_API + "/bots"
+  const response: Response = await fetch(url, {method: 'GET'})
+  return response
 }
 
 export async function talkWithIA(message: string, userId: string): Promise<Response>{
-  const talkUrl: string = LOY_LOCAL_API + "/messages";
+  const talkUrl: string = LOY_LOCAL_API + "/messages"
   const response: Response = await fetch(
     talkUrl, 
     {
