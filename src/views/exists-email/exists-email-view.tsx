@@ -66,12 +66,17 @@ export function ExistsEmailView(): JSX.Element {
                     initial={{ opacity: 0, y: -50 }}
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -50 }}>
+                    
+                    <div>
+                        <h1 className='text-white txt-title'>¡Bienvenid@! Descubre lo fácil que es aprender con la ayuda adecuada.</h1>
+                    </div>
+
                     <main style={{ width: '100%', minWidth: '500px', maxWidth: '500px' }} className='main-container bg-base-100 rounded-md'>
 
                         {(inputErrorMessage.length > 0) && (
                             <div style={{ width: '1000%', display: 'flex', justifyContent: 'center', position: 'fixed', minWidth: '500px', maxWidth: '500px' }}>
                                 <div role="alert" className="alert alert-info"
-                                    style={{ padding: '8px', gap: 2, marginTop: '40px', display: 'flex', width: '90%', justifyContent: 'center' }}
+                                    style={{ padding: '8px', gap: 2, marginTop: '20px', display: 'flex', width: '90%', justifyContent: 'center' }}
                                     onClick={() => { setInputErrorMessage('') }}>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"

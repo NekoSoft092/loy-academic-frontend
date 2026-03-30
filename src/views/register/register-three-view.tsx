@@ -44,7 +44,7 @@ export function RegisterThreeView(): JSX.Element {
             }
             const resp: ILoginResponse | ILoginResponseError = await signUp(req)
             if ((resp as ILoginResponse).status === 'success') {
-                navigate('/chat')
+                navigate('/assistants')
             }
             
 

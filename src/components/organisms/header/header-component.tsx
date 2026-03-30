@@ -3,6 +3,8 @@ import { useEffect } from 'react';
 import { Avatar } from '@chatscope/chat-ui-kit-react';
 import { useAppStore } from '@/stores/app-store';
 import { useUserStore } from '@/stores/user-store';
+import { useChatStore } from '@/stores/chat-store';
+import { LOY_LOCAL_API } from '@/services/app-service';
 
 export interface IHeaderComponentProps {
   name: string;
@@ -21,8 +23,11 @@ export function HeaderComponent(props: IHeaderComponentProps): JSX.Element {
     store.nextTheme
   ])
 
-  useEffect(() => {
+  const [bot] = useChatStore((state) => [
+    state.botSelected
+  ])
 
+  useEffect(() => {
   }, [props.available, environment])
 
   // Refactor a menu and items on array
@@ -30,9 +35,10 @@ export function HeaderComponent(props: IHeaderComponentProps): JSX.Element {
     <header data-theme={theme} className='header-container bg-base-200 flex justify-between pl-5 pr-5' style={{ height: '70px', width: '80%' }} as="ConversationHeader">
       <nav className='flex flex-row justify-center content-center gap-4'>
         <button className="circle">
+
           <Avatar
-            src="/assistants/elena-ia-assistant.svg"
-            name={'Elena'}
+            src={bot !== null ? LOY_LOCAL_API + "/bots/" + bot.id + "/image" : ""}
+            name={bot !== null ? bot.name : ""}
             status={props.available ? "available" : "dnd"}
           />
         </button>

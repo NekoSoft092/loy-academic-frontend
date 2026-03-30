@@ -62,6 +62,11 @@ export function LoginView(): JSX.Element {
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}>
+
+          <div>
+            <h1 className='text-white txt-title'>Tu camino hacia el éxito académico comienza aquí.</h1>
+          </div>
+          
           <main style={{width: '100%', minWidth: '500px', maxWidth: '500px'}} className='main-container bg-base-100 rounded-md'>
 
           {(inputErrorMessage.length > 0) && (
@@ -117,7 +122,13 @@ export function LoginView(): JSX.Element {
           
           <div style={{ width: '100%', paddingBottom: '10px' }}>
             <form onSubmit={onSubmit} className='auth-form'>
-              <p className='flex flex-row justify-end forgot' style={{ opacity: 0.6, fontSize: '14px' }}>¿Olvidaste tu contraseña?</p>
+              <button 
+                type="button"
+                onClick={() => { navigate('/forgot-password') } }
+                className='flex flex-row justify-end forgot' 
+                style={{ opacity: 0.6, fontSize: '14px', background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', textDecoration: 'underline' }}>
+                ¿Olvidaste tu contraseña?
+              </button>
 
               <label className={'input input-bordered flex items-center gap-2'} style={{ outlineStyle: "none", width: '100%' }}>
                 <svg

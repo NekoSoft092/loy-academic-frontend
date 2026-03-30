@@ -69,10 +69,10 @@ dependencies:
     version: 8.4.1(@types/react@18.0.15)(react@18.2.0)
   tauri-plugin-autostart-api:
     specifier: github:tauri-apps/tauri-plugin-autostart
-    version: github.com/tauri-apps/tauri-plugin-autostart/0be4d74f4223d683548f521555546ce8b26c3e74
+    version: github.com/tauri-apps/tauri-plugin-autostart/905c79c6dd3e681c8bc15a6a9e1374e257442043
   tauri-plugin-store-api:
     specifier: github:tauri-apps/tauri-plugin-store
-    version: github.com/tauri-apps/tauri-plugin-store/cf977580aa753f47fda571ab4911e4e1f53dd65e
+    version: github.com/tauri-apps/tauri-plugin-store/8e7289fb6c3e5456993a562bd9d70d2129e68e82
   ts-node:
     specifier: ^10.9.2
     version: 10.9.2(@types/node@18.7.10)(typescript@5.6.2)
@@ -5331,16 +5331,16 @@ packages:
       use-sync-external-store: 1.2.0(react@18.2.0)
     dev: false
 
-  github.com/tauri-apps/tauri-plugin-autostart/0be4d74f4223d683548f521555546ce8b26c3e74:
-    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-autostart/tar.gz/0be4d74f4223d683548f521555546ce8b26c3e74}
+  github.com/tauri-apps/tauri-plugin-autostart/905c79c6dd3e681c8bc15a6a9e1374e257442043:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-autostart/tar.gz/905c79c6dd3e681c8bc15a6a9e1374e257442043}
     name: tauri-plugin-autostart-api
     version: 0.0.0
     dependencies:
       '@tauri-apps/api': 1.6.0
     dev: false
 
-  github.com/tauri-apps/tauri-plugin-store/cf977580aa753f47fda571ab4911e4e1f53dd65e:
-    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-store/tar.gz/cf977580aa753f47fda571ab4911e4e1f53dd65e}
+  github.com/tauri-apps/tauri-plugin-store/8e7289fb6c3e5456993a562bd9d70d2129e68e82:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-store/tar.gz/8e7289fb6c3e5456993a562bd9d70d2129e68e82}
     name: tauri-plugin-store-api
     version: 0.0.0
     dependencies:

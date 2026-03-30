@@ -12,6 +12,7 @@ import { SpotifyCallbackView } from './views/callback/spotify-callback-view';
 import { AssistantsView } from './views/assistants/assistants-view';
 import { HomeView } from './views/home/home-view';
 import { MarketplaceView } from './views/marketplace/marketplace-view';
+import { ForgotPasswordView } from './views/forgot-password/forgot-password-view';
 
 export function AppRouter(): JSX.Element {
   return (
@@ -30,7 +31,9 @@ export function AppRouter(): JSX.Element {
           <Route path="/register-two" element={<RegisterTwoView/>} />
           <Route path='/register-three' element={<RegisterThreeView/>} />
           <Route path="/login" element={<LoginView />} />
+          <Route path="/forgot-password" element={<ForgotPasswordView />} />
           <Route path='/chat' element={ <ChatView />} />
+          <Route path='/chat/:id' element={ <ChatView />} />
           <Route path="/settings" element={<SettingsView />} />
           <Route path="/register" element={<RegisterView />} />
           <Route path="/auth/spotifycallback" element={<SpotifyCallbackView />} />
@@ -50,6 +53,7 @@ export enum RoutePath {
   REGISTER_TWO = '/register-two',
   REGISTER_THREE = '/register-three',
   LOGIN = '/login',
+  FORGOT_PASSWORD = '/forgot-password',
   CHAT = '/chat',
   SETTINGS = '/settings',
   REGISTER = '/register',

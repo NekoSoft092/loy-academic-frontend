@@ -2,7 +2,7 @@ import { create } from 'zustand';
 import { loginService, isRegisteredService, registerService, type IRegisterRequest, validateLoginService } from '@/services/auth-service';
 import { useChatStore } from './chat-store';
 
-class ApiErrorResponse implements IErrorResponse {
+export class ApiErrorResponse implements IErrorResponse {
   detail: string;
   constructor(detail: string) {
     this.detail = detail;

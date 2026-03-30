@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SettingsList } from '@/components/core/settings-list';
+import { SideBarComponent } from '@/components/organisms/side-bar/side-bar-component';
 import { motion, AnimatePresence } from 'framer-motion';
 import type { ISearchUpdateResponse } from '@/lib/update';
 import { searchUpdate } from '@/lib/update';
@@ -8,15 +9,18 @@ import './settings-view.css';
 import { useAppStore } from '@/stores/app-store';
 import { useAuthStore } from '@/stores/auth-store';
 import { useChatStore } from '@/stores/chat-store';
+import { useUserStore } from '@/stores/user-store';
 import { useNavigate, type NavigateFunction, useMatch } from 'react-router-dom';
+import '@/components/organisms/header/header-component.css'
 
 export function SettingsView(): JSX.Element {
   const isSettingsPath = (useMatch('/settings') ?? false) as boolean;
 
   const navigate: NavigateFunction = useNavigate();
+  const [initLoading, setInitLoading] = useState<boolean>(false);
 
   const [ updateResponse, setUpdateResponse] = useState<ISearchUpdateResponse | undefined>(undefined);
-  const [ version, enable, name ] = useAppStore((store)=>[
+  const [ version, enable, appSettingsName ] = useAppStore((store)=>[
     store.version, 
     store.settings[2].enabled, 
     store.settings[2].name
@@ -30,6 +34,47 @@ export function SettingsView(): JSX.Element {
     store.botName
   ])
 
+  const [theme, setTheme, userName, getGeneralInformacion, nextTheme] = useUserStore((store) => [
+    store.theme,
+    store.setTheme,
+    store.name,
+    store.getGeneralInformacion,
+    store.nextTheme
+  ])
+
+  const [setUserId] = useAuthStore((state) => [
+    state.setUserId
+  ])
+
+  const init = async (id: string): Promise<void> => {
+    if (id.length > 0) {
+      await getGeneralInformacion(id)
+      setInitLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    setInitLoading(true)
+    const userId: string | null = localStorage.getItem('user-id') !== null ? localStorage.getItem('user-id') as string : '';
+
+    if (userId.length === 0) {
+      if (localStorage.getItem('user-id') !== null) {
+        setUserId(localStorage.getItem('user-id') as string)
+      } else {
+        setUserId(userId)
+      }
+    }
+    if (localStorage.getItem('theme') !== null) {
+      setTheme(localStorage.getItem('theme') as string)
+    }
+
+    init(userId).then(() => { }).catch((err) => {
+      console.log(err)
+    });
+
+    return () => { }
+  }, [userName])
+
   const handleSearchUpdate = async(): Promise<void> => {
     const searchResponse: ISearchUpdateResponse = await searchUpdate();
     setUpdateResponse(searchResponse);
@@ -40,58 +85,76 @@ export function SettingsView(): JSX.Element {
   }
 
   return (
-    <div data-theme="cupcake" className="flex flex-col" style={onWeb(window)?{ }: {paddingTop: '0px'}}>
-      {isSettingsPath && (
+    <div data-theme={theme} className={'view bg-primary'}>
+      {initLoading && <span className="loading loading-spinner loading-xl"></span>}
+      {!initLoading && isSettingsPath && (
         <AnimatePresence>
-          <motion.div
-            style={{ width: '100%'}}
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -50 }}
-          >
-            <section className={onWeb(window)?'space-between': 'sage-view space-between'} style={{width: ''}}>
-              <div>
-                
-                <SettingsList />
-              
-                { (enable && !onWeb(window)) && (
-                  <div className='developers-tools'>
-                    <h3>{name} activo</h3>
-
-                    <div className=''>
-                      { userId !== '' && (
-                        <p>Lookup_key: {userId}</p>
-                      )}
-                     
-                      <p>Bot_name: {botName}</p>
-
-
-                    </div>
-                  </div>
-                )}
-              </div>
-              { (!onWeb(window)) && (
+          <motion.div style={{ width: '100%', height: '100%' }}
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className='flex'>
+            <SideBarComponent userName={userName} />
+            <main style={{ width: '80%', minWidth: '0px', maxWidth: '2000px' }} className='bg-base-100 bg-register'>
+              <header className='header-container bg-base-200 flex justify-between pl-5 pr-5' style={{ height: '70px', width: '80%' }} as="ConversationHeader">
+                <div className='flex col justify-center'>
+                  <h2 className='text-center bold mt-4' style={{ fontSize: 25 }}></h2>
+                </div>
+                <div className='flex gap-2 justify-center'>
+                  <button
+                    onClick={() => {
+                      nextTheme()
+                    }}
+                    style={{ display: 'flex', gap: '5px' }}
+                    className="pt-5">
+                    <p style={{ textTransform: 'capitalize' }}>{theme}</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
+                    </svg>
+                  </button>
+                </div>
+              </header>
+              <section className='space-between sage-view-content' style={{marginTop: 80}}>
                 <div>
-                  <div className='update-section'>
-                    <p className='text-center'>Manténgase actualizado sobre nuestras últimas características</p>
-                    <button onClick={handleSearchUpdate}>Buscar actualizaciones</button>
-                    <p>v{version}</p>
-                  </div>
-                  
-                  {(updateResponse !== undefined) && (
-                    <div className='modal-section'>
-                      <dialog className={(updateResponse !== undefined)? 'modal active': 'modal'}>
-                        <h5>Buscar actualizaciones</h5>
-                        <div className=''>{updateResponse.message}</div>
-                        <nav className="right-align">
-                          <button onClick={handleAcceptButton}>Aceptar</button>
-                        </nav>
-                      </dialog>
+                  <SettingsList />
+                
+                  { (enable && !onWeb(window)) && (
+                    <div className='developers-tools'>
+                      <h3>{appSettingsName} activo</h3>
+
+                      <div className=''>
+                        { userId !== '' && (
+                          <p>Lookup_key: {userId}</p>
+                        )}
+                       
+                        <p>Bot_name: {botName}</p>
+                      </div>
                     </div>
                   )}
-                 </div>
-              )}
-            </section>
+                </div>
+                { (!onWeb(window)) && (
+                  <div>
+                    <div className='update-section'>
+                      <p className='text-center'>Manténgase actualizado sobre nuestras últimas características</p>
+                      <button onClick={handleSearchUpdate}>Buscar actualizaciones</button>
+                      <p>v{version}</p>
+                    </div>
+                    
+                    {(updateResponse !== undefined) && (
+                      <div className='modal-section'>
+                        <dialog className={(updateResponse !== undefined)? 'modal active': 'modal'}>
+                          <h5>Buscar actualizaciones</h5>
+                          <div className=''>{updateResponse.message}</div>
+                          <nav className="right-align">
+                            <button onClick={handleAcceptButton}>Aceptar</button>
+                          </nav>
+                        </dialog>
+                      </div>
+                    )}
+                   </div>
+                )}
+              </section>
+            </main>
           </motion.div>
         </AnimatePresence>
       )}

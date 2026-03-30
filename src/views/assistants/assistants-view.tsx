@@ -8,6 +8,7 @@ import { useAuthStore } from '@/stores/auth-store';
 import '@/components/organisms/header/header-component.css'
 import { type IBot, useAppStore } from '@/stores/app-store';
 import { LOY_LOCAL_API } from '@/services/app-service'
+import { useChatStore } from '@/stores/chat-store';
 
 export function AssistantsView(): JSX.Element {
 
@@ -30,6 +31,19 @@ export function AssistantsView(): JSX.Element {
     const [bots] = useAppStore((state) => [
         state.bots
     ])
+
+    const [setBotSelected] = useChatStore((state) => [
+        state.setBotSelected
+    ])
+
+    const navigateToChat = (botId: string): void => {
+        const bot: IBot | undefined = bots.find((b: IBot) => b.id === botId);
+        if (bot !== undefined && bot !== null) {
+            setBotSelected(bot as any);
+            navigate(`/chat/${botId}`)
+        }
+        
+    }
 
     const init = async (id: string): Promise<void> => {
         if (id.length > 0) {
@@ -132,7 +146,14 @@ export function AssistantsView(): JSX.Element {
                                                 <div className='bg-warning p-2 flex gap-2'>
                                                     <p className='text-warning-content text-xs'>experimental</p>
                                                 </div>
-                                                <button className="btn btn-primary">Comenzar</button>
+                                                <button 
+                                                    onClick={() => {
+                                                        navigateToChat(bot.id)
+                                                    }}
+                                                    className="btn btn-primary"
+                                                >
+                                                    Comenzar
+                                                </button>
                                             </div>
                                         </div>
                                     </div>

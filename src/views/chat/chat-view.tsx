@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-floating-promises */
 import { useAuthStore } from '@/stores/auth-store';
 import './chat-view.css';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   MainContainer,
   ChatContainer,
@@ -22,9 +23,12 @@ import { ModalPDFComponent } from '@/components/molecules/modal-pdf/modal-pdf-co
 import { useUserStore } from '@/stores/user-store';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SideBarComponent } from '@/components/organisms/side-bar/side-bar-component';
+import { RoutePath } from '@/router';
 
 export function ChatView(): JSX.Element {
 
+  const { bot_id: botId } = useParams<{ bot_id: string }>();
+  const navigate = useNavigate();
   const [initLoading, setInitLoading] = useState<boolean>(false);
 
 
@@ -41,16 +45,16 @@ export function ChatView(): JSX.Element {
 
   const [isAvailable, setAvailable] = useAppStore((state) => [
     state.isAvailable,
-    state.setAvailable
+    state.setAvailable,
   ])
 
-  const [isTyping, messages, error, closeMessageError, botName, loadMessages] = useChatStore((state) => [
+  const [isTyping, messages, error, closeMessageError, botSelected, loadMessages] = useChatStore((state) => [
     state.isTyping,
     state.messages,
     state.error,
     state.closeMessageError,
-    state.botName,
-    state.loadMessages
+    state.botSelected,
+    state.loadMessages,
   ]);
 
   const init = async (id: string): Promise<void> => {
@@ -84,6 +88,12 @@ export function ChatView(): JSX.Element {
   }
 
   useEffect(() => {
+    console.log(botId, botSelected)
+    if (botId !== null && botSelected === null) {
+      navigate(RoutePath.ASSISTANS);
+      return;
+    }
+
     const userId: string | null = localStorage.getItem('user-id') !== null ? localStorage.getItem('user-id') as string : '';
   
     if (userId.length === 0) {
@@ -125,11 +135,13 @@ export function ChatView(): JSX.Element {
               {(onWeb(window) || true) && (
                 <ModalPDFComponent />
               )}
-
-              <HeaderComponent
-                name={botName}
-                available={isAvailable}
-              />
+              {botSelected !== null && (
+                <HeaderComponent
+                  name={botSelected !== null ? botSelected.name : 'Sage'}
+                  available={isAvailable}
+                />
+              )}
+              
 
               {initLoading && (
                 <LoaderComponent
@@ -161,7 +173,7 @@ export function ChatView(): JSX.Element {
                       isTyping && (
                         <TypingIndicator
                           style={{ marginLeft: '10px' }}
-                          content="Elena is typing"
+                          content="Typing ... "
                         />
                       )}>
                     {messageListComponent}

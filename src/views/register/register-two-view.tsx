@@ -59,6 +59,9 @@ import { universitiesColombia } from '@/lib/universities';
                animate={{ opacity: 1, y: 0 }}
                exit={{ opacity: 0, y: -50 }}
                className='bg-auth'>
+                  <div>
+            <h1 className='text-white txt-title'>Tu camino hacia el éxito académico comienza aquí.</h1>
+          </div>
              <main style={{width: '100%', minWidth: '500px', maxWidth: '500px'}} className='main-container bg-base-100 rounded-md'>
                <div>
                <div className='header-view'>

@@ -22,8 +22,8 @@ export function HomeView(): JSX.Element {
     ])
 
     const [setUserId] = useAuthStore((state) => [
-            state.setUserId
-        ])
+        state.setUserId
+    ])
 
     const init = async (id: string): Promise<void> => {
         if (id.length > 0) {
@@ -67,13 +67,12 @@ export function HomeView(): JSX.Element {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -50 }}
                         className='flex'>
-                        <SideBarComponent userName={name}/>
+                        <SideBarComponent userName={name} />
                         <main style={{ width: '80%', minWidth: '0px', maxWidth: '2000px' }} className='bg-base-100 bg-register'>
-                        <header className='header-container bg-base-200 flex justify-between pl-5 pr-5' style={{ height: '70px', width: '80%' }} as="ConversationHeader">
+                            <header className='header-container bg-base-200 flex justify-between pl-5 pr-5' style={{ height: '70px', width: '80%' }} as="ConversationHeader">
                                 <div className='flex col justify-center'>
-                                    <h2 className='text-center bold mt-4' style={{fontSize: 25}}></h2>
+                                    <h2 className='text-center bold mt-4' style={{ fontSize: 25 }}></h2>
                                 </div>
-
                                 <div className='flex gap-2 justify-center'>
                                     <button
                                         onClick={() => {

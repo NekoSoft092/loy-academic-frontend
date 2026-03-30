@@ -96,3 +96,48 @@ export async function loginSpotifyCallbackService(code: string, state: string, u
   );
   return response;
 }
+
+export async function requestPasswordResetService(email: string): Promise<Response> {
+  const url: string = LOY_LOCAL_API + "/auth/forgot-password";
+  const response: Response = await fetch(
+    url,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email
+      })
+    }
+  );
+  return response;
+}
+
+export async function resetPasswordService(email: string, code: string, newPassword: string): Promise<Response> {
+  const url: string = LOY_LOCAL_API + "/auth/reset-password";
+  const response: Response = await fetch(
+    url,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        code,
+        new_password: newPassword
+      })
+    }
+  );
+  return response;
+}
+
+export interface IPasswordResetResponse {
+  message: string;
+  status?: string;
+}
+
+export interface IErrorResponse {
+  detail: string;
+}

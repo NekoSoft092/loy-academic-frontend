@@ -123,7 +123,7 @@ export interface AppStore {
   version: string;
   isAvailable: boolean;
   settings: SettingOption[];
-  environment: 'stg' | 'prod' | 'local' 
+  environment: 'stg' | 'prod' | 'local'
   bots: IBot[]
   isDevBuild: () => boolean
   fetchAppData: () => Promise<void>
