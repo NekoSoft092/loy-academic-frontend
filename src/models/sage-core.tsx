@@ -17,13 +17,3 @@ export interface SageBotThread {
   created_at: string
   updated_at: string
 }
-
-export interface SageThreadMessage {
-  id: string
-  role: string
-  content: string
-  name: string
-  timestamp: string
-  bot_id?: string
-  data?: any
-}

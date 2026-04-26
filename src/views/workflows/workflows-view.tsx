@@ -9,7 +9,7 @@ import { HeaderComponent } from '@/components/organisms/header/header-component'
 import { useAppStore } from '@/stores/app-store';
 import { DetailSideBar } from '@/components/organisms/detail-side-bar/detail-side-bar';
 
-export function MarketplaceView(): JSX.Element {
+export function WorkflowsView(): JSX.Element {
 
     const [initLoading, setInitLoading] = useState<boolean>(false);
 
@@ -23,8 +23,8 @@ export function MarketplaceView(): JSX.Element {
     ])
 
     const [setUserId] = useAuthStore((state) => [
-            state.setUserId
-        ])
+        state.setUserId
+    ])
 
     const [showNotificationsPanel] = useAppStore((state) => [
         state.showNotificationsPanel
@@ -72,11 +72,16 @@ export function MarketplaceView(): JSX.Element {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -50 }}
                         className='flex'>
-                        <SideBarComponent userName={name}/>
-                        <main style={{ width: '80%', minWidth: '0px', maxWidth: '2000px' }} className='bg-base-100 bg-register'>
+                        <SideBarComponent userName={name} />
+                        <main style={{ width: '80%', minWidth: '0px', maxWidth: '2000px' }} className='bg-base-100'>
                             <section className='flex flex-row h-full'>
                                 <div style={{ width: showNotificationsPanel ? '70%' : '100%', minWidth: '0px', maxWidth: '2000px' }} className='flex flex-col'>
-                                    <HeaderComponent name={''} available={true} chatHeader={false} backbutton={false}/>
+                                    <HeaderComponent name={''} available={true} chatHeader={false} backbutton={false} />
+                                    <div style={{ overflow: 'scroll', scrollBehavior: 'smooth', height: '92%' }} className='mt-16 border-purple-900 border-solid border-2 rounded-lg mx-5'>
+                                        <div className='flex flex-row justify-between items-center px-5 bg-base-100'>
+                                            <h1 className='text-primary text-3xl py-4'>Tus flujos de trabajo</h1>
+                                        </div>
+                                    </div>
                                 </div>
                                 {showNotificationsPanel && <DetailSideBar type='notifications' />}
                             </section>

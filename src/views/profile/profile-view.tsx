@@ -9,7 +9,7 @@ import { HeaderComponent } from '@/components/organisms/header/header-component'
 import { useAppStore } from '@/stores/app-store';
 import { DetailSideBar } from '@/components/organisms/detail-side-bar/detail-side-bar';
 
-export function MarketplaceView(): JSX.Element {
+export function ProfileView(): JSX.Element {
 
     const [initLoading, setInitLoading] = useState<boolean>(false);
 

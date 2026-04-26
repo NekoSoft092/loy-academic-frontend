@@ -11,8 +11,9 @@ export function ChatFormComponent(): JSX.Element {
       store.userId
     ])
 
-    const [ addMessage ] = useChatStore((state) => [
-      state.addMessage
+    const [ addMessage, botSelected ] = useChatStore((state) => [
+      state.addMessage,
+      state.botSelected
     ]);
 
     const handleSendMessage = (): void => {
@@ -40,7 +41,7 @@ export function ChatFormComponent(): JSX.Element {
 
       // De Morgan 
       if(!onlyEnter && !onlySpace && !((counterEnter + counterSpace) === message.length) && message.length > 3) {
-        addMessage(message, userId);
+        addMessage(message, userId, botSelected?.id ?? '');
         if(inputref.current !== null) {
           inputref.current.value = '';
         }

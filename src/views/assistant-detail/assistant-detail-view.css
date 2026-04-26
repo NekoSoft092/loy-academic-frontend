@@ -1,0 +1,271 @@
+/* Bot Detail View Styles */
+
+.bot-detail-container {
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 70px);
+  width: 100%;
+  overflow: auto;
+  margin-top: 70px;
+}
+
+.bot-detail-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 3rem;
+  max-width: 1200px;
+  width: 100%;
+}
+
+/* Bot Image Section */
+.bot-image-section {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  position: sticky;
+  top: 100px;
+}
+
+.bot-image {
+  width: 300px;
+  height: 300px;
+  border-radius: 1rem;
+  object-fit: cover;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  border: 3px solid var(--color-border, #e5e7eb);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bot-image:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+}
+
+/* Bot Info Section */
+.bot-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.bot-header {
+  border-bottom: 2px solid var(--color-border, #e5e7eb);
+  padding-bottom: 1rem;
+}
+
+.bot-name {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Card Styles */
+.card-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  color: var(--text-primary, #1f2937);
+}
+
+.card-content {
+  font-size: 1rem;
+  line-height: 1.6;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  color: var(--text-secondary, #4b5563);
+}
+
+.bot-description-card,
+.bot-context-card,
+.bot-skills-card {
+  background: var(--color-surface, #f9fafb);
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  transition: all 0.3s ease;
+}
+
+.bot-description-card:hover,
+.bot-context-card:hover,
+.bot-skills-card:hover {
+  border-color: var(--color-primary, #3b82f6);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.1);
+}
+
+/* Skills List */
+.skills-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.skill-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--color-skill-bg, #eff6ff);
+  border-left: 3px solid var(--color-primary, #3b82f6);
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.skill-item:hover {
+  transform: translateX(4px);
+  background: var(--color-skill-bg-hover, #dbeafe);
+}
+
+.skill-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  background: var(--color-primary, #3b82f6);
+  color: white;
+  border-radius: 50%;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.skill-text {
+  font-size: 0.95rem;
+  color: var(--text-primary, #1f2937);
+}
+
+/* Action Buttons */
+.bot-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.start-chat-btn {
+  flex: 1;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+}
+
+.start-chat-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.start-chat-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .bot-detail-content {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .bot-image-section {
+    position: static;
+    margin-bottom: 1rem;
+  }
+
+  .bot-image {
+    width: 250px;
+    height: 250px;
+  }
+
+  .bot-name {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .bot-detail-container {
+    padding: 1rem;
+  }
+
+  .bot-image {
+    width: 200px;
+    height: 200px;
+  }
+
+  .bot-name {
+    font-size: 1.75rem;
+  }
+
+  .card-title {
+    font-size: 1.1rem;
+  }
+
+  .skills-list {
+    grid-template-columns: 1fr;
+  }
+
+  .start-chat-btn {
+    font-size: 1rem;
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bot-detail-container {
+    padding: 0.75rem;
+  }
+
+  .bot-image {
+    width: 150px;
+    height: 150px;
+  }
+
+  .bot-name {
+    font-size: 1.5rem;
+  }
+
+  .card-content {
+    font-size: 0.9rem;
+  }
+
+  .skill-text {
+    font-size: 0.85rem;
+  }
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .bot-description-card,
+[data-theme="dark"] .bot-context-card,
+[data-theme="dark"] .bot-skills-card {
+  background: var(--color-surface-dark, #1f2937);
+  border-color: var(--color-border-dark, #374151);
+}
+
+[data-theme="dark"] .card-title {
+  color: var(--text-primary-dark, #f3f4f6);
+}
+
+[data-theme="dark"] .card-content {
+  color: var(--text-secondary-dark, #d1d5db);
+}
+
+[data-theme="dark"] .skill-item {
+  background: var(--color-skill-bg-dark, #1e3a5f);
+  border-left-color: var(--color-primary, #60a5fa);
+}
+
+[data-theme="dark"] .skill-item:hover {
+  background: var(--color-skill-bg-hover-dark, #1e3a8a);
+}
+
+[data-theme="dark"] .skill-text {
+  color: var(--text-primary-dark, #f3f4f6);
+}

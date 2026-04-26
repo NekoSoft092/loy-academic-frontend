@@ -5,6 +5,7 @@ import './login-view.css';
 import { useAppStore } from '@/stores/app-store';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/stores/user-store';
+import { RoutePath } from '@/router';
 
 export function LoginView(): JSX.Element {
 
@@ -38,7 +39,7 @@ export function LoginView(): JSX.Element {
 
     const response: ILoginResponse | ILoginResponseError = await signIn(email, password)
     if ((response as ILoginResponse).status === "success") {
-      navigate('/')
+      navigate(RoutePath.HOME)
     } else if ((response as ILoginResponseError).detail === 'invalid credentials') {
       setInputErrorMessage('Ups!!! Esta contraseña no es correcta. ¿Quieres volver a intentarlo?')
     } else if ((response as ILoginResponseError).detail !== 'invalid credentials') {
@@ -62,6 +63,11 @@ export function LoginView(): JSX.Element {
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -50 }}>
+
+          <div>
+            <h1 className='text-white txt-title'>Tu camino hacia el éxito académico comienza aquí.</h1>
+          </div>
+          
           <main style={{width: '100%', minWidth: '500px', maxWidth: '500px'}} className='main-container bg-base-100 rounded-md'>
 
           {(inputErrorMessage.length > 0) && (
@@ -87,7 +93,7 @@ export function LoginView(): JSX.Element {
 
             <div className='header-view-login'>
               <button onClick={() => {
-                navigate('/is-registered')
+                navigate(RoutePath.IS_REGISTERED)
               }}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                   <path fillRule="evenodd" d="M7.28 7.72a.75.75 0 0 1 0 1.06l-2.47 2.47H21a.75.75 0 0 1 0 1.5H4.81l2.47 2.47a.75.75 0 1 1-1.06 1.06l-3.75-3.75a.75.75 0 0 1 0-1.06l3.75-3.75a.75.75 0 0 1 1.06 0Z" clipRule="evenodd" />
@@ -117,7 +123,13 @@ export function LoginView(): JSX.Element {
           
           <div style={{ width: '100%', paddingBottom: '10px' }}>
             <form onSubmit={onSubmit} className='auth-form'>
-              <p className='flex flex-row justify-end forgot' style={{ opacity: 0.6, fontSize: '14px' }}>¿Olvidaste tu contraseña?</p>
+              <button 
+                type="button"
+                onClick={() => { navigate('/forgot-password') } }
+                className='flex flex-row justify-end forgot' 
+                style={{ opacity: 0.6, fontSize: '14px', background: 'none', border: 'none', cursor: 'pointer', padding: 0, color: 'inherit', textDecoration: 'underline' }}>
+                ¿Olvidaste tu contraseña?
+              </button>
 
               <label className={'input input-bordered flex items-center gap-2'} style={{ outlineStyle: "none", width: '100%' }}>
                 <svg

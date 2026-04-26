@@ -12,6 +12,12 @@ import { SpotifyCallbackView } from './views/callback/spotify-callback-view';
 import { AssistantsView } from './views/assistants/assistants-view';
 import { HomeView } from './views/home/home-view';
 import { MarketplaceView } from './views/marketplace/marketplace-view';
+import { ForgotPasswordView } from './views/forgot-password/forgot-password-view';
+import { AssistantDetailView } from './views/assistant-detail/assistant-detail-view';
+import { WorkflowsView } from './views/workflows/workflows-view';
+import { TutorialsView } from './views/tutorials/tutorials-view';
+import { CreateBotView } from './views/create-bot/create-bot-view';
+import { ProfileView } from './views/profile/profile-view';
 
 export function AppRouter(): JSX.Element {
   return (
@@ -22,7 +28,7 @@ export function AppRouter(): JSX.Element {
             path="/"
             element={
               <Protected>
-                <ChatView />
+                <HomeView />
               </Protected>
             }
           />
@@ -30,14 +36,22 @@ export function AppRouter(): JSX.Element {
           <Route path="/register-two" element={<RegisterTwoView/>} />
           <Route path='/register-three' element={<RegisterThreeView/>} />
           <Route path="/login" element={<LoginView />} />
+          <Route path="/forgot-password" element={<ForgotPasswordView />} />
           <Route path='/chat' element={ <ChatView />} />
+          <Route path='/chat/:id' element={ <ChatView />} />
           <Route path="/settings" element={<SettingsView />} />
           <Route path="/register" element={<RegisterView />} />
           <Route path="/auth/spotifycallback" element={<SpotifyCallbackView />} />
           <Route path="/dev" element={<DevView />} />
           <Route path='/assistants' element={<AssistantsView />}/>
+          <Route path='/assistants/:id' element={<AssistantDetailView />}/>
           <Route path='/home' element={<HomeView />}/>
-          <Route path='/marketplace' element={<MarketplaceView />}/> 
+          <Route path='/marketplace' element={<MarketplaceView />}/>
+          <Route path='/workflows' element={<WorkflowsView />}/>
+          <Route path='/tutorials' element={<TutorialsView />}/>
+          <Route path='/create-bot' element={<CreateBotView />}/>
+          <Route path='/profile' element={<ProfileView />}/>
+          <Route path="*" element={<h1>404 Not Found</h1>} />
           </Routes>
       </Router>
     </>
@@ -50,6 +64,7 @@ export enum RoutePath {
   REGISTER_TWO = '/register-two',
   REGISTER_THREE = '/register-three',
   LOGIN = '/login',
+  FORGOT_PASSWORD = '/forgot-password',
   CHAT = '/chat',
   SETTINGS = '/settings',
   REGISTER = '/register',
@@ -58,4 +73,8 @@ export enum RoutePath {
   ASSISTANS = '/assistants',
   HOME = '/home',
   MARKETPLACE = '/marketplace',
+  WORKFLOWS = '/workflows',
+  TUTORIALS = '/tutorials',
+  CREATE_BOT = '/create-bot',
+  PROFILE = '/profile'
 }
