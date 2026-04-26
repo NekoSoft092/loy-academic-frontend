@@ -1,6 +1,7 @@
 import { useAuthStore, type ApiErrorResponse } from '@/stores/auth-store';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { RoutePath } from '@/router';
 
 interface ProtectedProps {
   children: JSX.Element
@@ -17,13 +18,13 @@ export function Protected({ children }: ProtectedProps): JSX.Element {
       .then((data: boolean | ApiErrorResponse) => {
       
         if (typeof data === 'boolean' && data) {
-          navigate('/');
+          navigate(RoutePath.HOME);
         } else {
-          navigate('/is-registered')
+          navigate(RoutePath.IS_REGISTERED)
         }
       })
       .catch((err) => {
-        navigate('/is-registered');
+        navigate(RoutePath.IS_REGISTERED);
         console.log('session', err);
       })
   }, [])

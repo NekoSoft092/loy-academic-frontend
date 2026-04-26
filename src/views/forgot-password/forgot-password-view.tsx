@@ -5,6 +5,7 @@ import { useAppStore } from '@/stores/app-store';
 import { useUserStore } from '@/stores/user-store';
 import { requestPasswordResetService, resetPasswordService, type IPasswordResetResponse, type IErrorResponse } from '@/services/auth-service';
 import './forgot-password-view.css';
+import { RoutePath } from '@/router';
 
 export function ForgotPasswordView(): JSX.Element {
   const store = useAppStore((state) => ({
@@ -25,6 +26,7 @@ export function ForgotPasswordView(): JSX.Element {
   const [showConfirmPassword, setShowConfirmPassword] = useState<boolean>(false);
   const [inputErrorMessage, setInputErrorMessage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  
   const [successMessage, setSuccessMessage] = useState<string>('');
 
   const [theme, setTheme] = useUserStore((store) => [
@@ -41,6 +43,15 @@ export function ForgotPasswordView(): JSX.Element {
   // Password validation
   const isValidPassword = (password: string): boolean => {
     return password.length >= 8 && /[A-Z]/.test(password) && /[0-9]/.test(password);
+  };
+
+  const handleRequest = async (e: React.FormEvent): Promise<void> => {
+    e.preventDefault();
+    if (step === 'email') {
+      await handleRequestReset(e);
+    } else if (step === 'verification') {
+      await handleResetPassword(e);
+    }
   };
 
   // Handle step 1: Request password reset
@@ -82,6 +93,7 @@ export function ForgotPasswordView(): JSX.Element {
   const handleResetPassword = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
     setInputErrorMessage('');
+    setSuccessMessage('');
 
     if (code.length === 0) {
       setInputErrorMessage('Por favor ingresa el código');
@@ -117,7 +129,7 @@ export function ForgotPasswordView(): JSX.Element {
         setSuccessMessage('¡Contraseña actualizada exitosamente!');
         setStep('reset');
         setTimeout(() => {
-          navigate('/login');
+          navigate(RoutePath.LOGIN);
         }, 2000);
       } else {
         const errorData = data as IErrorResponse;
@@ -193,7 +205,7 @@ export function ForgotPasswordView(): JSX.Element {
               <div style={{ width: '24px' }}></div>
             </div>
 
-            <form className='form-forgot-password' onSubmit={step === 'email' ? handleRequestReset : handleResetPassword}>
+            <form className='form-forgot-password' onSubmit={handleRequest}>
 
               {/* Step 1: Request Reset */}
               {step === 'email' && (

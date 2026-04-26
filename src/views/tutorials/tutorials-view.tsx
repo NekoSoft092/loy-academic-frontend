@@ -9,7 +9,7 @@ import { HeaderComponent } from '@/components/organisms/header/header-component'
 import { useAppStore } from '@/stores/app-store';
 import { DetailSideBar } from '@/components/organisms/detail-side-bar/detail-side-bar';
 
-export function MarketplaceView(): JSX.Element {
+export function TutorialsView(): JSX.Element {
 
     const [initLoading, setInitLoading] = useState<boolean>(false);
 
@@ -23,8 +23,8 @@ export function MarketplaceView(): JSX.Element {
     ])
 
     const [setUserId] = useAuthStore((state) => [
-            state.setUserId
-        ])
+        state.setUserId
+    ])
 
     const [showNotificationsPanel] = useAppStore((state) => [
         state.showNotificationsPanel
@@ -72,11 +72,23 @@ export function MarketplaceView(): JSX.Element {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -50 }}
                         className='flex'>
-                        <SideBarComponent userName={name}/>
+                        <SideBarComponent userName={name} />
+
                         <main style={{ width: '80%', minWidth: '0px', maxWidth: '2000px' }} className='bg-base-100 bg-register'>
                             <section className='flex flex-row h-full'>
                                 <div style={{ width: showNotificationsPanel ? '70%' : '100%', minWidth: '0px', maxWidth: '2000px' }} className='flex flex-col'>
-                                    <HeaderComponent name={''} available={true} chatHeader={false} backbutton={false}/>
+                                    <div style={{ marginTop: '70px' }} className=' flex bg-base-100 p-4 gap-2'>
+                                        <label className="input flex justify-center items-center gap-2 border-spacing-5">
+                                            <svg className="h-5 opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g strokeLinejoin="round" strokeLinecap="round" strokeWidth="2.5" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></g></svg>
+                                            <input type="search" required placeholder="Buscar la materia" />
+                                        </label>
+                                        <p className='text-center text-sm mt-7 ' style={{ opacity: 0.5 }}>Por ejemplo: MATE1033 o Calculo Diferencial</p>
+                                    </div>
+                                    <HeaderComponent
+                                        name={''}
+                                        available={true}
+                                        chatHeader={false}
+                                        backbutton={false} />
                                 </div>
                                 {showNotificationsPanel && <DetailSideBar type='notifications' />}
                             </section>

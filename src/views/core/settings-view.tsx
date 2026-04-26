@@ -12,6 +12,8 @@ import { useChatStore } from '@/stores/chat-store';
 import { useUserStore } from '@/stores/user-store';
 import { useNavigate, type NavigateFunction, useMatch } from 'react-router-dom';
 import '@/components/organisms/header/header-component.css'
+import { HeaderComponent } from '@/components/organisms/header/header-component';
+import { DetailSideBar } from '@/components/organisms/detail-side-bar/detail-side-bar';
 
 export function SettingsView(): JSX.Element {
   const isSettingsPath = (useMatch('/settings') ?? false) as boolean;
@@ -29,17 +31,20 @@ export function SettingsView(): JSX.Element {
   const [ userId ] = useAuthStore((store) => [
     store.userId, 
   ])
+
+  const [ showNotificationsPanel ] = useAppStore((store) => [
+    store.showNotificationsPanel
+  ])
   
   const [ botName ] = useChatStore((store)=> [
     store.botName
   ])
 
-  const [theme, setTheme, userName, getGeneralInformacion, nextTheme] = useUserStore((store) => [
+  const [theme, setTheme, userName, getGeneralInformacion] = useUserStore((store) => [
     store.theme,
     store.setTheme,
     store.name,
-    store.getGeneralInformacion,
-    store.nextTheme
+    store.getGeneralInformacion
   ])
 
   const [setUserId] = useAuthStore((state) => [
@@ -95,42 +100,11 @@ export function SettingsView(): JSX.Element {
             exit={{ opacity: 0, y: -50 }}
             className='flex'>
             <SideBarComponent userName={userName} />
-            <main style={{ width: '80%', minWidth: '0px', maxWidth: '2000px' }} className='bg-base-100 bg-register'>
-              <header className='header-container bg-base-200 flex justify-between pl-5 pr-5' style={{ height: '70px', width: '80%' }} as="ConversationHeader">
-                <div className='flex col justify-center'>
-                  <h2 className='text-center bold mt-4' style={{ fontSize: 25 }}></h2>
-                </div>
-                <div className='flex gap-2 justify-center'>
-                  <button
-                    onClick={() => {
-                      nextTheme()
-                    }}
-                    style={{ display: 'flex', gap: '5px' }}
-                    className="pt-5">
-                    <p style={{ textTransform: 'capitalize' }}>{theme}</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
-                    </svg>
-                  </button>
-                </div>
-              </header>
-              <section className='space-between sage-view-content' style={{marginTop: 80}}>
+            <main style={{ width: showNotificationsPanel ? '60%' : '80%', minWidth: '0px', maxWidth: '2000px' }} className='bg-base-100 bg-register'>
+              <HeaderComponent name={''} available={true} chatHeader={false} backbutton={false} />
+              <section className='bg-base-200' style={{marginTop: 80}}>
                 <div>
                   <SettingsList />
-                
-                  { (enable && !onWeb(window)) && (
-                    <div className='developers-tools'>
-                      <h3>{appSettingsName} activo</h3>
-
-                      <div className=''>
-                        { userId !== '' && (
-                          <p>Lookup_key: {userId}</p>
-                        )}
-                       
-                        <p>Bot_name: {botName}</p>
-                      </div>
-                    </div>
-                  )}
                 </div>
                 { (!onWeb(window)) && (
                   <div>
@@ -155,6 +129,7 @@ export function SettingsView(): JSX.Element {
                 )}
               </section>
             </main>
+            {showNotificationsPanel && <DetailSideBar type='notifications' />}
           </motion.div>
         </AnimatePresence>
       )}

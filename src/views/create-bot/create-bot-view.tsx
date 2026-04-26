@@ -1,26 +1,25 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createBot, type ICreateBotRequest } from '@/services/app-service';
-import { getRandomBotName } from '@/lib/bot-names';
 import { SideBarComponent } from '@/components/organisms/side-bar/side-bar-component';
 import { useUserStore } from '@/stores/user-store';
 import { AnimatePresence, motion } from 'framer-motion';
 import './create-bot-view.css';
+import { HeaderComponent } from '@/components/organisms/header/header-component';
 
 export function CreateBotView(): JSX.Element {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   
-  const [theme, setTheme, userName, nextTheme] = useUserStore((store) => [
+  const [theme, setTheme, userName] = useUserStore((store) => [
     store.theme,
     store.setTheme,
     store.name,
-    store.nextTheme
   ]);
 
   const [formData, setFormData] = useState<ICreateBotRequest>({
-    name: getRandomBotName(),
+    name: '',
     description: '',
     context: '',
     gender_male: false,
@@ -33,7 +32,7 @@ export function CreateBotView(): JSX.Element {
     }
   }, [setTheme]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>): void => {
     const { name, value, type } = e.target;
     
     if (type === 'checkbox') {
@@ -49,7 +48,7 @@ export function CreateBotView(): JSX.Element {
     }
   };
 
-  const handleSkillChange = (skill: string) => {
+  const handleSkillChange = (skill: string): void => {
     setFormData(prev => ({
       ...prev,
       skills: prev.skills.includes(skill)
@@ -58,26 +57,26 @@ export function CreateBotView(): JSX.Element {
     }));
   };
 
-  const handleGenerateRandomName = () => {
+  const handleGenerateRandomName = (): void => {
     setFormData(prev => ({
       ...prev,
-      name: getRandomBotName()
+      name: ''
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
 
     try {
-      if (!formData.name.trim()) {
+      if (formData.name.trim().length === 0) {
         throw new Error('El nombre es requerido');
       }
-      if (!formData.description.trim()) {
+      if (formData.description.trim().length === 0) {
         throw new Error('La descripción es requerida');
       }
-      if (!formData.context.trim()) {
+      if (formData.context.trim().length === 0) {
         throw new Error('El contexto es requerido');
       }
       if (formData.skills.length === 0) {
@@ -88,7 +87,7 @@ export function CreateBotView(): JSX.Element {
       
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Error al crear el bot');
+        throw new Error(errorData.message !== null ? errorData.message : 'Error al crear el bot');
       }
 
       const newBot = await response.json();
@@ -114,25 +113,10 @@ export function CreateBotView(): JSX.Element {
           <SideBarComponent userName={userName} />
           
           <main className='create-bot-main bg-base-100'>
-            <header className='create-bot-header-container bg-base-200'>
-              <div className='create-bot-header-content'>
-                <h1>Crear nuevo agente de estudio</h1>
-              </div>
-              <div className='create-bot-theme-control'>
-                <button
-                  onClick={() => nextTheme()}
-                  style={{ display: 'flex', gap: '5px' }}
-                  className="theme-toggle-btn">
-                  <p style={{ textTransform: 'capitalize' }}>{theme}</p>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
-                  </svg>
-                </button>
-              </div>
-            </header>
+            <HeaderComponent name={''} available={true} chatHeader={false} backbutton={true} />
 
             <section className='create-bot-content'>
-              {error && <div className='create-bot-error'>{error}</div>}
+              {(error === null) && <div className='create-bot-error'>{error}</div>}
 
               <div className='create-bot-form-wrapper'>
                 <p className='create-bot-subtitle'>Diseña tu propio copiloto personalizado para ayudarte en tus estudios</p>

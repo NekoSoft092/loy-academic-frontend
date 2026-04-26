@@ -1,3 +1,4 @@
+import { LOY_LOCAL_API } from "@/lib/urls"
 
 export interface IRegisterRequest {
   name: string
@@ -11,8 +12,6 @@ export interface IRegisterRequest {
   birth_date?: string
   career?: string
 }
-
-const LOY_LOCAL_API: string = 'http://localhost:8000/api/v1';
 
 export async function registerService(request: IRegisterRequest): Promise<Response> {
   const urlRegister: string = LOY_LOCAL_API + "/auth/register";
@@ -98,7 +97,7 @@ export async function loginSpotifyCallbackService(code: string, state: string, u
 }
 
 export async function requestPasswordResetService(email: string): Promise<Response> {
-  const url: string = LOY_LOCAL_API + "/auth/forgot-password";
+  const url: string = LOY_LOCAL_API + "/auth/send-verification-code";
   const response: Response = await fetch(
     url,
     {

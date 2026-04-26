@@ -2,14 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom/client'
 import { AppRouter } from './router';
 import { useAppStore } from './stores/app-store';
-import { useChatStore } from './stores/chat-store';
 import './normalize.css';
 import './styles.css';
 import { ModalCountryComponent } from './components/molecules/modal-country/modal-country-component';
 import * as Sentry from "@sentry/browser";
 
-if ((import.meta.env.MODE === 'production' || import.meta.env.MODE === 'prod') && import.meta.env.VITE_SENTRY_DSN) {
-  Sentry.init({ dsn: import.meta.env.VITE_SENTRY_DSN });
+if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'prod') {
+  Sentry.init({ dsn: "https://9aea4bcc1c5844a5bc12566b5749b5bb@app.glitchtip.com/10302"});
 }
 
 declare module 'react' {
@@ -24,11 +23,6 @@ useAppStore
   .init()
   .catch((err) => {
     console.error(err)
-  });
-
-useChatStore.getState().init()
-  .catch((error)=> {
-    console.error(error);
   });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(

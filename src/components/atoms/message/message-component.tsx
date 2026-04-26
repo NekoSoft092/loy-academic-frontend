@@ -5,7 +5,8 @@ import './message-component.css';
 import { onWeb } from "@/lib/windows";
 import { ArticleReferences } from "@/components/templates/article-references";
 import { useEffect, useState } from "react";
-import { LOY_LOCAL_API } from "@/services/app-service";
+import { LOY_LOCAL_API } from "@/lib/urls";
+import { generateVoice } from "@/services/chat-service";
 
 // Class to represent a processed message
 export interface IMessageProcessed {
@@ -84,25 +85,6 @@ export function MessageComponent(props: IMessage): JSX.Element {
         await navigator.clipboard.writeText(text);
     }
 
-    const handleGenerateVoice = async (e: any, text: string): Promise<void> => {
-        e.preventDefault();
-
-        const response = await fetch('http://localhost:8000/api/v1/messages/generate-voice/', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-                text,
-                provider: "openai" 
-            }),
-        });
-        const audioBlob = await response.blob();
-        const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
-        await audio.play();
-    }
-
     const codeLanguage = (codeLang: string): string => {
         if(codeLang.includes('jsx')) {
           return 'javascript';
@@ -171,7 +153,8 @@ export function MessageComponent(props: IMessage): JSX.Element {
                                                 </i>
                                                 {(index === 0 && (
                                                     <i onClick={async(e) => {
-                                                        await handleGenerateVoice(e, item.trim())
+                                                        e.preventDefault();
+                                                        await generateVoice(item.trim())
                                                     }}>
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                                                             <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 0 1 0 12.728M16.463 8.288a5.25 5.25 0 0 1 0 7.424M6.75 8.25l4.72-4.72a.75.75 0 0 1 1.28.53v15.88a.75.75 0 0 1-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.009 9.009 0 0 1 2.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75Z" />

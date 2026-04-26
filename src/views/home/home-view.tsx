@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { useUserStore } from '@/stores/user-store';
 import { RoutePath } from '@/router';
 import { useAuthStore } from '@/stores/auth-store';
+import { useAppStore } from '@/stores/app-store';
 import { AnimatePresence, motion } from 'framer-motion';
-import '@/components/organisms/header/header-component.css'
+import { HeaderComponent } from '@/components/organisms/header/header-component';
+import { DetailSideBar } from '@/components/organisms/detail-side-bar/detail-side-bar';
 
 export function HomeView(): JSX.Element {
 
@@ -13,16 +15,19 @@ export function HomeView(): JSX.Element {
 
     const navigate: NavigateFunction = useNavigate();
 
-    const [theme, setTheme, name, getGeneralInformacion, nextTheme] = useUserStore((store) => [
+    const [theme, setTheme, name, getGeneralInformacion] = useUserStore((store) => [
         store.theme,
         store.setTheme,
         store.name,
-        store.getGeneralInformacion,
-        store.nextTheme
+        store.getGeneralInformacion
     ])
 
     const [setUserId] = useAuthStore((state) => [
         state.setUserId
+    ])
+
+    const [showNotificationsPanel] = useAppStore((state) => [
+        state.showNotificationsPanel
     ])
 
     const init = async (id: string): Promise<void> => {
@@ -35,6 +40,23 @@ export function HomeView(): JSX.Element {
         }
     }
 
+    const greetingsByHour = (): string => {
+        const currentHour: number = new Date().getHours();
+        let greeting: string = 'Hola';
+
+        if (currentHour >= 5 && currentHour < 12) {
+            greeting = '¡Buenos días';
+        } else if (currentHour >= 12 && currentHour < 18) {
+            greeting = '¡Buenas tardes';
+        } else if (currentHour >= 18 || currentHour < 5) {
+            greeting = '¡Buenas noches';
+        }
+
+        return greeting;
+    }
+
+    const userNameFirstName = name.split(' ')[0]
+
     useEffect(() => {
         setInitLoading(true)
         const userId: string | null = localStorage.getItem('user-id') !== null ? localStorage.getItem('user-id') as string : '';
@@ -46,6 +68,7 @@ export function HomeView(): JSX.Element {
                 setUserId(userId)
             }
         }
+
         if (localStorage.getItem('theme') !== null) {
             setTheme(localStorage.getItem('theme') as string)
         }
@@ -68,26 +91,32 @@ export function HomeView(): JSX.Element {
                         exit={{ opacity: 0, y: -50 }}
                         className='flex'>
                         <SideBarComponent userName={name} />
-                        <main style={{ width: '80%', minWidth: '0px', maxWidth: '2000px' }} className='bg-base-100 bg-register'>
-                            <header className='header-container bg-base-200 flex justify-between pl-5 pr-5' style={{ height: '70px', width: '80%' }} as="ConversationHeader">
-                                <div className='flex col justify-center'>
-                                    <h2 className='text-center bold mt-4' style={{ fontSize: 25 }}></h2>
+                        <main style={{ width: '80%', minWidth: '0px', maxWidth: '2000px', height: '100%'}} className='bg-base-100 bg-register'>
+
+                            <HeaderComponent name={''} available={true} chatHeader={false} backbutton={false} />
+
+                            <section className='flex flex-row h-full'>
+                                <div className='flex pt-20 pl-4 pr-4 pb-4 bg-base-300 mt-10 flex-col gap-6' style={{ width: showNotificationsPanel ? '70%' : '100%', minWidth: '0px', maxWidth: '2000px' }}>
+                                    <div className=''>
+                                        <h1 className="text-3xl font-bold">{greetingsByHour()} {userNameFirstName}!</h1>
+                                    </div>
+
+                                    <div className='flex'>
+                                        <h2 className='text-2xl font-bold'></h2>
+                                        <div className='flex flex-row'>
+                                            <div className=''>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
                                 </div>
-                                <div className='flex gap-2 justify-center'>
-                                    <button
-                                        onClick={() => {
-                                            nextTheme()
-                                        }}
-                                        style={{ display: 'flex', gap: '5px' }}
-                                        className="pt-5">
-                                        <p style={{ textTransform: 'capitalize' }}>{theme}</p>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 0 0-5.78 1.128 2.25 2.25 0 0 1-2.4 2.245 4.5 4.5 0 0 0 8.4-2.245c0-.399-.078-.78-.22-1.128Zm0 0a15.998 15.998 0 0 0 3.388-1.62m-5.043-.025a15.994 15.994 0 0 1 1.622-3.395m3.42 3.42a15.995 15.995 0 0 0 4.764-4.648l3.876-5.814a1.151 1.151 0 0 0-1.597-1.597L14.146 6.32a15.996 15.996 0 0 0-4.649 4.763m3.42 3.42a6.776 6.776 0 0 0-3.42-3.42" />
-                                        </svg>
-                                    </button>
-                                </div>
-                            </header>
+                                {showNotificationsPanel && <DetailSideBar type='notifications' />}
+                            </section>
+
+                            
                         </main>
+
                     </motion.div>
                 </AnimatePresence>
             )}

@@ -9,7 +9,7 @@ import {
   TypingIndicator
 } from '@chatscope/chat-ui-kit-react';
 import { useChatStore } from '@/stores/chat-store';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { getHealth } from '@/services/app-service';
 import { LoaderComponent, LoaderSize } from '@/components/atoms/loader/loader-component';
 import { HeaderComponent } from '@/components/organisms/header/header-component';
@@ -23,6 +23,7 @@ import { ModalPDFComponent } from '@/components/molecules/modal-pdf/modal-pdf-co
 import { useUserStore } from '@/stores/user-store';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SideBarComponent } from '@/components/organisms/side-bar/side-bar-component';
+import { DetailSideBar } from '@/components/organisms/detail-side-bar/detail-side-bar';
 import { RoutePath } from '@/router';
 
 export function ChatView(): JSX.Element {
@@ -30,7 +31,7 @@ export function ChatView(): JSX.Element {
   const { bot_id: botId } = useParams<{ bot_id: string }>();
   const navigate = useNavigate();
   const [initLoading, setInitLoading] = useState<boolean>(false);
-
+  const hasInitialized = useRef(false);
 
   const [setUserId] = useAuthStore((state) => [
     state.setUserId
@@ -43,18 +44,20 @@ export function ChatView(): JSX.Element {
     store.getGeneralInformacion
   ])
 
-  const [isAvailable, setAvailable] = useAppStore((state) => [
+  const [isAvailable, setAvailable, showNotificationsPanel] = useAppStore((state) => [
     state.isAvailable,
     state.setAvailable,
+    state.showNotificationsPanel
   ])
 
-  const [isTyping, messages, error, closeMessageError, botSelected, loadMessages] = useChatStore((state) => [
+  const [isTyping, messages, error, closeMessageError, botSelected, loadMessages, setMessages] = useChatStore((state) => [
     state.isTyping,
     state.messages,
     state.error,
     state.closeMessageError,
     state.botSelected,
     state.loadMessages,
+    state.setMessages
   ]);
 
   const init = async (id: string): Promise<void> => {
@@ -88,6 +91,10 @@ export function ChatView(): JSX.Element {
   }
 
   useEffect(() => {
+    // Prevenir ejecución múltiple (React 18 Strict Mode, etc)
+    if (hasInitialized.current) return;
+    hasInitialized.current = true;
+
     console.log(botId, botSelected)
     if (botId !== null && botSelected === null) {
       navigate(RoutePath.ASSISTANS);
@@ -109,14 +116,15 @@ export function ChatView(): JSX.Element {
 
     setAvailable(false)
     checkAvailable();
-    init(userId).then(() => { }).catch((err) => {
+    init(userId).catch((err) => {
       console.log(err)
     });
 
     return () => {
       setAvailable(false);
+      setMessages([]);
     }
-  }, [name])
+  }, [])
 
   return (
     <div data-theme={theme} className={'view bg-primary'}>
@@ -129,7 +137,7 @@ export function ChatView(): JSX.Element {
           className='flex'>
           <SideBarComponent userName={name} />
           
-          <main style={{ width: '80%', minWidth: '0px', maxWidth: '2000px' }} className='bg-base-100 bg-register'>
+          <main style={{ width: showNotificationsPanel ? '60%' : '80%', minWidth: '0px', maxWidth: '2000px' }} className='bg-base-100 bg-register'>
 
             <MainContainer style={{ overflow: 'hidden', height: '100%' }}>
               {(onWeb(window) || true) && (
@@ -139,6 +147,8 @@ export function ChatView(): JSX.Element {
                 <HeaderComponent
                   name={botSelected !== null ? botSelected.name : 'Sage'}
                   available={isAvailable}
+                  chatHeader={true}
+                  backbutton={true}
                 />
               )}
               
@@ -176,7 +186,9 @@ export function ChatView(): JSX.Element {
                           content="Typing ... "
                         />
                       )}>
-                    {messageListComponent}
+                    
+                      {messageListComponent}
+                    
                   </MessageList>
                 </ChatContainer>
 
@@ -186,20 +198,9 @@ export function ChatView(): JSX.Element {
 
             </MainContainer>
           </main>
+          {showNotificationsPanel && <DetailSideBar type='notifications' />}
         </motion.div>
       </AnimatePresence>
     </div>
   )
-}
-
-// EsLint Refactor 
-
-export interface SageThreadMessage {
-  id: string
-  role: string
-  content: string
-  name: string
-  timestamp: string
-  bot_id?: string
-  data?: any
 }

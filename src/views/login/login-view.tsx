@@ -5,6 +5,7 @@ import './login-view.css';
 import { useAppStore } from '@/stores/app-store';
 import { useEffect, useState } from 'react';
 import { useUserStore } from '@/stores/user-store';
+import { RoutePath } from '@/router';
 
 export function LoginView(): JSX.Element {
 
@@ -38,7 +39,7 @@ export function LoginView(): JSX.Element {
 
     const response: ILoginResponse | ILoginResponseError = await signIn(email, password)
     if ((response as ILoginResponse).status === "success") {
-      navigate('/')
+      navigate(RoutePath.HOME)
     } else if ((response as ILoginResponseError).detail === 'invalid credentials') {
       setInputErrorMessage('Ups!!! Esta contraseña no es correcta. ¿Quieres volver a intentarlo?')
     } else if ((response as ILoginResponseError).detail !== 'invalid credentials') {
@@ -92,7 +93,7 @@ export function LoginView(): JSX.Element {
 
             <div className='header-view-login'>
               <button onClick={() => {
-                navigate('/is-registered')
+                navigate(RoutePath.IS_REGISTERED)
               }}>
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
                   <path fillRule="evenodd" d="M7.28 7.72a.75.75 0 0 1 0 1.06l-2.47 2.47H21a.75.75 0 0 1 0 1.5H4.81l2.47 2.47a.75.75 0 1 1-1.06 1.06l-3.75-3.75a.75.75 0 0 1 0-1.06l3.75-3.75a.75.75 0 0 1 1.06 0Z" clipRule="evenodd" />

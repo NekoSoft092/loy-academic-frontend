@@ -1,11 +1,21 @@
 import { type IBot } from "@/stores/app-store"
+import { LOY_LOCAL_API } from "@/lib/urls"
 
-export const LOY_LOCAL_API: string = 'http://localhost:8000/api/v1'
 
 export async function getHealth(): Promise<boolean> {
   const urlApi: string = LOY_LOCAL_API
   const response = await fetch(`${urlApi}/health`)
   return response.status === 200
+}
+
+/**
+ * Funtion to get the daily news from the backend, created by an bot expecialized
+ * @returns 
+ */
+export async function getDailyNews(): Promise<Response> {
+  const url: string = LOY_LOCAL_API + "/news/daily"
+  const response: Response = await fetch(url, {method: 'GET'})
+  return response
 }
 
 export async function getAllBots(): Promise<Response> {
@@ -71,6 +81,32 @@ export async function createBot(botData: ICreateBotRequest): Promise<Response> {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(botData)
+  })
+  return response
+}
+
+export async function getBotDetailById(botId: string): Promise<Response> {
+  const url: string = LOY_LOCAL_API + `/bots/${botId}`
+  const response: Response = await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  return response
+}
+
+export async function getUserNotifications(userId: string, sessionToken: string): Promise<Response> {
+  const url: string = LOY_LOCAL_API + "/notifications"
+  const response: Response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      user_id: userId,
+      session_token: sessionToken
+    })
   })
   return response
 }
