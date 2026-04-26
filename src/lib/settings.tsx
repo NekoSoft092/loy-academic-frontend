@@ -8,6 +8,7 @@ export interface SettingOption {
   type?: 'toggle' | 'select' | 'text' | 'number'
   options?: { label: string; value: string }[]
   toggle?: () => any | Promise<any>
+  value?: string
 }
 
 export interface SettingSection {

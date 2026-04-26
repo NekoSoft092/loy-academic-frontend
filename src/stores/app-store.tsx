@@ -189,6 +189,7 @@ export interface IDailyNews {
 
 export interface SettingData {
   enabled: boolean
+  value?: string
 }
 
 export interface IBot {
@@ -207,13 +208,14 @@ export interface AppStore {
   name: string;
   version: string;
   isAvailable: boolean;
-  settings: SettingOption[];
+  settings: SettingSection[];
   environment: 'stg' | 'prod' | 'local'
   bots: IBot[]
   currentBot: IBotDetail | null
   isDevBuild: () => boolean
   fetchAppData: () => Promise<void>
   toggleSetting: (id: string) => Promise<void>
+  selectSettingValue: (id: string, value: string) => Promise<void>
   loadSettings: () => Promise<void>
   getBackendHealth: () => Promise<void>
   isLoading: boolean
