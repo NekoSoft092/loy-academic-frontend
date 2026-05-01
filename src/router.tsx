@@ -18,6 +18,7 @@ import { WorkflowsView } from './views/workflows/workflows-view';
 import { TutorialsView } from './views/tutorials/tutorials-view';
 import { CreateBotView } from './views/create-bot/create-bot-view';
 import { ProfileView } from './views/profile/profile-view';
+import { CheckoutView } from './views/checkout/checkout-view';
 
 export function AppRouter(): JSX.Element {
   return (
@@ -51,6 +52,7 @@ export function AppRouter(): JSX.Element {
           <Route path='/tutorials' element={<TutorialsView />}/>
           <Route path='/create-bot' element={<CreateBotView />}/>
           <Route path='/profile' element={<ProfileView />}/>
+          <Route path='/checkout' element={<CheckoutView />}/>
           <Route path="*" element={<h1>404 Not Found</h1>} />
           </Routes>
       </Router>
@@ -76,5 +78,6 @@ export enum RoutePath {
   WORKFLOWS = '/workflows',
   TUTORIALS = '/tutorials',
   CREATE_BOT = '/create-bot',
-  PROFILE = '/profile'
+  PROFILE = '/profile',
+  CHECKOUT = '/checkout'
 }
