@@ -89,22 +89,12 @@ export function ExistsEmailView(): JSX.Element {
 
                         <section className='exists-email-card bg-base-100 shadow-lg'>
                             <div className='exists-email-card-visual bg-primary text-primary-content'>
-                                <div className='flex items-center justify-between gap-4'>
-                                    <div className='badge badge-neutral gap-2'>
-                                        <SparklesIcon className='h-4 w-4' />
-                                        Loy Academic
-                                    </div>
-                                    <div className='avatar'>
-                                        <div className='w-16 rounded-lg bg-base-100'>
-                                            <img src='/assistants/elena-ia-assistant.svg' alt='Asistente académico' />
-                                        </div>
-                                    </div>
-                                </div>
+                                
 
                                 <div>
                                     <h1 className='mt-6 text-4xl font-bold leading-tight'>Empieza una conversación para aprender mejor</h1>
                                     <p className='mt-3 text-base text-primary-content/80'>
-                                        Entra con tu correo y conecta con asistentes, tutorías y workflows de estudio.
+                                        Entra con tu correo y conecta con asistentes, tutorías y flujos de estudio.
                                     </p>
                                 </div>
 
