@@ -1,8 +1,18 @@
 .modal-country {
-    background-color: transparent;
-    backdrop-filter: blur(5px);
+    position: fixed;
+    inset: 0;
+    z-index: 98;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background-color: hsl(var(--b1) / 0.55);
+    backdrop-filter: blur(8px);
 }
 
-.modal-close {
-    cursor: pointer;
+.modal-country-card {
+    width: min(100%, 420px);
+    border: 1px solid hsl(var(--b3));
+    border-radius: 8px;
+    padding: 24px;
 }

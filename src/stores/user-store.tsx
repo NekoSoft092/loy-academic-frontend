@@ -8,6 +8,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
     setName: (name: string): void => {
         set({ name });
     },
+    plan: 'free',
     birthDate: new Date('2000-01-01'), 
     setBirthDate: (birthDate: Date): void => {
         set({ birthDate });
@@ -64,6 +65,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
             console.log('data', data)
             set({name: data.name})
             set({email: data.email})
+            set({plan: data.plan})
             if(data.spotify_token !== null) {
                 localStorage.setItem('spotify-token', data.spotify_token)
                 set({spotifyToken: data.spotify_token})
@@ -76,6 +78,7 @@ export const useUserStore = create<UserStore>((set, get) => ({
 
 export interface UserStore {
     name: string
+    plan: string
     setName: (name: string) => void
     birthDate: Date
     setBirthDate: (birthDate: Date) => void

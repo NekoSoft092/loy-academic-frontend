@@ -3,6 +3,7 @@ import { useUserStore } from '@/stores/user-store';
 import { countries, type ICountry } from '@/lib/countries';
 import { useAppStore } from '@/stores/app-store';
 import { AnimatePresence, motion } from 'framer-motion';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 
 export interface IModalComponent {
     title: string
@@ -24,55 +25,55 @@ export const ModalCountryComponent = (props: IModalComponent): JSX.Element => {
     return (
         <>
         { modalActive  && (
-            <div data-theme={theme} style={{ zIndex: 98, width: '100%', maxWidth: '900px', position: 'fixed', paddingTop: '300px', paddingBottom: '400px'}} className='modal-country flex justify-center'>
-            
-            <AnimatePresence>
-            <motion.div style={{}}
-                initial={{ opacity: 0, y: -30 }}
-                animate={{
-                    opacity: 1,
-                    y: 0,
-                    transition: { 
-                        ease: ["linear"]
-                    }, 
-                    
-                }}
-                exit={{ opacity: 0, y: -50 }}
-                className='bg-auth'>
-            
-            <div className="bg-base-100 reset rounded-md border border-primary" style={{ width: '400px', height: '180px'}}>
-                <div className="reset" style={{ width: '100%'}}>
-        
-                    <div className='flex justify-end' style={{marginTop: '5px', marginRight: '5px'}}>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6 modal-close" onClick={() => {
-                            toggleModalActive()
-                        }}>
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                        </svg>
-                    </div>
-                    
-                    <p className="text-center" style={{fontSize: '21px'}}>{props.title}</p>
-                    <div className="flex justify-center pt-6">
-                        <form method="dialog" style={{display: 'flex', flexDirection: 'column', gap: '10px'}}>
-                            {countries.map((countryMap: ICountry, index: number)=>{
+            <div data-theme={theme} className='modal-country'>
+                <AnimatePresence>
+                    <motion.div
+                        initial={{ opacity: 0, y: -30 }}
+                        animate={{
+                            opacity: 1,
+                            y: 0,
+                            transition: {
+                                ease: ['linear']
+                            },
+                        }}
+                        exit={{ opacity: 0, y: -50 }}
+                        className='modal-country-card bg-base-100 shadow-lg'>
+
+                        <div className='flex items-start justify-between gap-4'>
+                            <div>
+                                <p className='text-sm font-semibold uppercase tracking-wide text-base-content/60'>País</p>
+                                <h2 className='mt-1 text-2xl font-bold text-base-content'>{props.title}</h2>
+                            </div>
+
+                            <button
+                                type='button'
+                                className='btn btn-ghost btn-sm btn-square'
+                                onClick={() => {
+                                    toggleModalActive()
+                                }}>
+                                <XMarkIcon className='h-5 w-5' />
+                            </button>
+                        </div>
+
+                        <div className='mt-5 grid gap-2'>
+                            {countries.map((countryMap: ICountry, index: number) => {
                                 return (
-                                <button key={index} className='reset capitalized flex content-center items-center gap-4'
-                                    type='button'
-                                    onClick={(e:  React.FormEvent) => {
-                                        setCountry(countryMap);
-                                        toggleModalActive()
-                                    }}
-                                >
-                                    <img src={countryMap.url} alt="" width={50}/>
-                                    <p style={{ fontSize: '17px' }}>{countryMap.name} (+{countryMap.country_code})</p>
-                                </button>
+                                    <button
+                                        key={index}
+                                        className='btn btn-outline justify-start gap-3'
+                                        type='button'
+                                        onClick={() => {
+                                            setCountry(countryMap);
+                                            toggleModalActive()
+                                        }}>
+                                        <img src={countryMap.url} alt={countryMap.name} width={28} height={28} />
+                                        <span className='capitalize'>{countryMap.name}</span>
+                                        <span className='ml-auto text-base-content/60'>+{countryMap.country_code}</span>
+                                    </button>
                                 )
                             })}
-                        </form>
-                    </div>
-                </div>
-                </div>
-                </motion.div>
+                        </div>
+                    </motion.div>
                 </AnimatePresence>
             </div>
         )}
