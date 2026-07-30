@@ -40,47 +40,7 @@ export function SettingsView(): JSX.Element {
     store.botName
   ])
 
-  const [theme, setTheme, userName, getGeneralInformacion] = useUserStore((store) => [
-    store.theme,
-    store.setTheme,
-    store.name,
-    store.getGeneralInformacion
-  ])
-
-  const [setUserId] = useAuthStore((state) => [
-    state.setUserId
-  ])
-
-  const init = async (id: string): Promise<void> => {
-    if (id.length > 0) {
-      await getGeneralInformacion(id)
-      setInitLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    setInitLoading(true)
-    const userId: string | null = localStorage.getItem('user-id') !== null ? localStorage.getItem('user-id') as string : '';
-
-    if (userId.length === 0) {
-      if (localStorage.getItem('user-id') !== null) {
-        setUserId(localStorage.getItem('user-id') as string)
-      } else {
-        setUserId(userId)
-      }
-    }
-    if (localStorage.getItem('theme') !== null) {
-      setTheme(localStorage.getItem('theme') as string)
-    }
-
-    init(userId).then(() => { }).catch((err) => {
-      console.log(err)
-    });
-
-    return () => { }
-  }, [userName])
-
-  const handleSearchUpdate = async (): Promise<void> => {
+  const handleSearchUpdate = async(): Promise<void> => {
     const searchResponse: ISearchUpdateResponse = await searchUpdate();
     setUpdateResponse(searchResponse);
   }

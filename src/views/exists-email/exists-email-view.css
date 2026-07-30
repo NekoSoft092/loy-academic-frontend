@@ -37,7 +37,10 @@
     min-width: 0;
     padding: 32px;
 }
-
+.txt-title {
+    font-size: 1.7rem;
+    font-weight: bold;
+}
 .version-container {
     display: flex;
     flex-direction: row;
