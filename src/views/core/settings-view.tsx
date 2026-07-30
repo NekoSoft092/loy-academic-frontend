@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { SettingsList } from '@/components/core/settings-list';
 import { SideBarComponent } from '@/components/organisms/side-bar/side-bar-component';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -7,8 +7,6 @@ import { searchUpdate } from '@/lib/update';
 import { onWeb } from '@/lib/windows';
 import './settings-view.css';
 import { useAppStore } from '@/stores/app-store';
-import { useAuthStore } from '@/stores/auth-store';
-import { useChatStore } from '@/stores/chat-store';
 import { useUserStore } from '@/stores/user-store';
 import { useNavigate, type NavigateFunction, useMatch } from 'react-router-dom';
 import '@/components/organisms/header/header-component.css'
@@ -22,22 +20,18 @@ export function SettingsView(): JSX.Element {
   const [initLoading, setInitLoading] = useState<boolean>(false);
 
   const [updateResponse, setUpdateResponse] = useState<ISearchUpdateResponse | undefined>(undefined);
-  const [version, enable, appSettingsName] = useAppStore((store) => [
+
+  const [version, enable, appSettingsName, showNotificationsPanel] = useAppStore((store) => [
     store.version,
     store.settings[2]?.settings[0]?.enabled ?? false,
-    store.settings[2]?.settings[0]?.name ?? ''
+    store.settings[2]?.settings[0]?.name ?? '',
+    store.showNotificationsPanel
   ]);
 
-  const [userId] = useAuthStore((store) => [
-    store.userId,
-  ])
 
-  const [showNotificationsPanel] = useAppStore((store) => [
-    store.showNotificationsPanel
-  ])
-
-  const [botName] = useChatStore((store) => [
-    store.botName
+  const [theme, userName] = useUserStore((store) => [
+    store.theme,
+    store.name
   ])
 
   const handleSearchUpdate = async(): Promise<void> => {
