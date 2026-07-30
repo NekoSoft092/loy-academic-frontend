@@ -67,7 +67,6 @@ export enum RoutePath {
   REGISTER_THREE = '/register-three',
   LOGIN = '/login',
   FORGOT_PASSWORD = '/forgot-password',
-  FORGOT_PASSWORD = '/forgot-password',
   CHAT = '/chat',
   SETTINGS = '/settings',
   REGISTER = '/register',
